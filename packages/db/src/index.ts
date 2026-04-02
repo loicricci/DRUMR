@@ -25,6 +25,26 @@ function debugLog(hypothesisId: string, location: string, message: string, data:
   // #endregion
 }
 
+function resolveEngineLibraryPath() {
+  const candidates = [
+    "/var/task/packages/db/src/generated/client/libquery_engine-rhel-openssl-3.0.x.so.node",
+    join(process.cwd(), "../../packages/db/src/generated/client/libquery_engine-rhel-openssl-3.0.x.so.node"),
+    join(process.cwd(), "packages/db/src/generated/client/libquery_engine-rhel-openssl-3.0.x.so.node"),
+  ];
+  return candidates.find((candidate) => existsSync(candidate));
+}
+
+const forcedEnginePath = resolveEngineLibraryPath();
+if (forcedEnginePath && !process.env.PRISMA_QUERY_ENGINE_LIBRARY) {
+  process.env.PRISMA_QUERY_ENGINE_LIBRARY = forcedEnginePath;
+}
+
+debugLog("H6", "packages/db/src/index.ts:engineOverride", "Resolved Prisma engine library override", {
+  forcedEnginePath: forcedEnginePath ?? null,
+  envEnginePath: process.env.PRISMA_QUERY_ENGINE_LIBRARY ?? null,
+  cwd: process.cwd(),
+});
+
 const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
 debugLog("H1", "packages/db/src/index.ts:new PrismaClient", "Prisma client constructed", {
@@ -50,6 +70,8 @@ const prismaDebugMeta = {
   generatedClientDir,
   generatedClientDirExists: existsSync(generatedClientDir),
   engineConfigDirname: engineConfig?.dirname ?? null,
+  forcedEnginePath: forcedEnginePath ?? null,
+  envEnginePath: process.env.PRISMA_QUERY_ENGINE_LIBRARY ?? null,
 };
 
 debugLog("H5", "packages/db/src/index.ts:modulePath", "DB module runtime path snapshot", prismaDebugMeta);
