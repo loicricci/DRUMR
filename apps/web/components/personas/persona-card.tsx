@@ -56,7 +56,6 @@ export function PersonaCard({ persona }: PersonaCardProps) {
 
   const demographics = persona.demographics as Record<string, string> | null;
   const signals = persona.experimentSignals as Record<string, unknown> | null;
-  const backlog = persona.hypothesisBacklog as string[] | null;
 
   return (
     <Card>
@@ -207,20 +206,6 @@ export function PersonaCard({ persona }: PersonaCardProps) {
           </div>
         )}
 
-        {backlog && backlog.length > 0 && (
-          <div>
-            <p className="mb-1 text-xs font-medium text-muted-foreground">
-              Hypothesis backlog
-            </p>
-            <ul className="space-y-1 text-sm">
-              {backlog.map((h, i) => (
-                <li key={i} className="rounded border p-2">
-                  {h}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
