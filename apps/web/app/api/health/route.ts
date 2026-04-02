@@ -1,14 +1,35 @@
 import { NextResponse } from "next/server";
+import { readdirSync, existsSync } from "fs";
+import { join } from "path";
 
 export const dynamic = "force-dynamic";
+
+function ls(dir: string): string[] | string {
+  try {
+    if (!existsSync(dir)) return "NOT_FOUND";
+    return readdirSync(dir);
+  } catch (e: any) {
+    return `ERROR: ${e.message}`;
+  }
+}
 
 export async function GET() {
   const checks: Record<string, unknown> = {
     timestamp: new Date().toISOString(),
+    cwd: process.cwd(),
     env: {
       DATABASE_URL: process.env.DATABASE_URL ? "SET" : "MISSING",
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? "SET" : "MISSING",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "SET" : "MISSING",
+    },
+    fs: {
+      "/var/task": ls("/var/task"),
+      "/var/task/node_modules/.prisma/client": ls("/var/task/node_modules/.prisma/client"),
+      "/var/task/node_modules/.prisma": ls("/var/task/node_modules/.prisma"),
+      "/var/task/node_modules": ls("/var/task/node_modules"),
+      "/var/task/apps": ls("/var/task/apps"),
+      "/var/task/apps/web": ls("/var/task/apps/web"),
+      "/var/task/apps/web/node_modules/.prisma/client": ls("/var/task/apps/web/node_modules/.prisma/client"),
     },
   };
 
@@ -17,16 +38,7 @@ export async function GET() {
     await prisma.$queryRaw`SELECT 1 as ok`;
     checks.database = "OK";
   } catch (e: any) {
-    checks.database = { error: e.message, name: e.name };
-  }
-
-  try {
-    const { createClient } = await import("@/lib/supabase/server");
-    const supabase = await createClient();
-    const { data, error } = await supabase.auth.getUser();
-    checks.supabase = error ? { error: error.message } : { user: data.user?.email ?? "anonymous" };
-  } catch (e: any) {
-    checks.supabase = { error: e.message, name: e.name };
+    checks.database = { error: e.message.slice(0, 300), name: e.name };
   }
 
   const ok = checks.database === "OK";
