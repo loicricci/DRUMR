@@ -20,8 +20,8 @@ import {
 export default async function DashboardPage() {
   const products = await getProducts();
 
-  const totalExperiments = products.reduce(
-    (sum: number, p) => sum + p._count.experiments,
+  const totalExperiments = products.reduce<number>(
+    (sum, p) => sum + p._count.experiments,
     0
   );
 
