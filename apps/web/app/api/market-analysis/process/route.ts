@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@drumr/db";
+import { prisma, Prisma } from "@drumr/db";
 import { createClient } from "@/lib/supabase/server";
 import Anthropic from "@anthropic-ai/sdk";
 
@@ -103,7 +103,7 @@ Conduct the market analysis now.`;
     const textBlock = response.content.find((b) => b.type === "text");
     const resultText = textBlock?.type === "text" ? textBlock.text : "";
 
-    let result: Record<string, unknown>;
+    let result: Prisma.JsonObject;
     let hypotheses: Array<{ hypothesis: string; personaName: string; personaId: string | null }>;
 
     try {
