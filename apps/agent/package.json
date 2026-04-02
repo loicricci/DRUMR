@@ -1,0 +1,25 @@
+{
+  "name": "@drumr/agent",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch worker.ts",
+    "build": "tsc",
+    "start": "node dist/worker.js",
+    "worker": "tsx worker.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@drumr/db": "workspace:*",
+    "@drumr/types": "workspace:*",
+    "@octokit/rest": "^21.0.0",
+    "dotenv": "^17.3.1",
+    "p-limit": "^6.1.0",
+    "resend": "^4.2.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

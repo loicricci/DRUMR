@@ -1,0 +1,322 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountPlan {
+  free
+  pro
+}
+
+enum ProductStage {
+  pre_launch
+  live
+  pre_revenue
+  traction
+}
+
+enum ExperimentStatus {
+  draft
+  running
+  review
+  validated
+  invalidated
+  paused
+}
+
+enum Verdict {
+  validated
+  invalidated
+  inconclusive
+}
+
+enum Recommendation {
+  continue
+  push
+  pause
+}
+
+enum AdPlatform {
+  google
+  twitter
+  linkedin
+}
+
+enum ReportType {
+  daily
+  verdict
+  market
+}
+
+enum JobType {
+  daily_report
+  market_analysis
+  verdict
+  persona_update
+}
+
+enum JobStatus {
+  queued
+  running
+  done
+  failed
+}
+
+enum OAuthProvider {
+  ga4
+  google_ads
+  twitter
+  github
+  linkedin_ads
+  resend
+}
+
+enum HypothesisSource {
+  agent
+  human
+}
+
+enum HypothesisStatus {
+  pending
+  in_progress
+  used
+  skipped
+}
+
+model Account {
+  id        String      @id @default(uuid()) @db.Uuid
+  email     String      @unique
+  name      String
+  plan      AccountPlan @default(free)
+  settings  Json        @default("{}")
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  products Product[]
+
+  @@map("accounts")
+}
+
+model Product {
+  id                  String       @id @default(uuid()) @db.Uuid
+  accountId           String       @map("account_id") @db.Uuid
+  name                String
+  url                 String
+  description         String       @db.Text
+  category            String
+  stage               ProductStage @default(pre_revenue)
+  regions             String[]
+  githubRepo          String?      @map("github_repo")
+  ga4PropertyId       String?      @map("ga4_property_id")
+  googleAdsCustomerId String?      @map("google_ads_customer_id")
+  twitterAdsAccountId  String?      @map("twitter_ads_account_id")
+  linkedinAdsAccountId String?      @map("linkedin_ads_account_id")
+  resendAudienceId     String?      @map("resend_audience_id")
+  createdAt            DateTime     @default(now()) @map("created_at")
+
+  account             Account                 @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  personas            Persona[]
+  marketReports       MarketReport[]
+  experiments         Experiment[]
+  reports             Report[]
+  oauthTokens         OAuthToken[]
+  hypothesisBacklog   HypothesisBacklogItem[]
+  experimentSnapshots ExperimentSnapshot[]
+
+  @@map("products")
+}
+
+model Persona {
+  id                 String    @id @default(uuid()) @db.Uuid
+  productId          String    @map("product_id") @db.Uuid
+  name               String
+  version            DateTime  @default(now())
+  segmentDescription String    @map("segment_description") @db.Text
+  primaryPain        String    @map("primary_pain") @db.Text
+  currentSolution    String    @map("current_solution") @db.Text
+  triggerEvent       String    @map("trigger_event") @db.Text
+  painLanguage       String[]  @map("pain_language")
+  channels           String[]
+  demographics       Json      @default("{}")
+  experimentSignals  Json      @default("{}") @map("experiment_signals")
+  // Persona update checkpoint: agent proposes changes, founder approves via UI
+  // Set by verdict/persona_update agent. Cleared after founder approves or rejects.
+  pendingAiUpdate    Json?     @map("pending_ai_update")
+  pendingAiUpdateAt  DateTime? @map("pending_ai_update_at")
+  // Tracks last direct founder edit — agent will not propose overwrite within 24h
+  lastHumanEditAt    DateTime? @map("last_human_edit_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  product           Product                 @relation(fields: [productId], references: [id], onDelete: Cascade)
+  experiments       Experiment[]
+  hypothesisBacklog HypothesisBacklogItem[]
+
+  @@map("personas")
+}
+
+model MarketReport {
+  id                 String    @id @default(uuid()) @db.Uuid
+  productId          String    @map("product_id") @db.Uuid
+  personaId          String?   @map("persona_id") @db.Uuid
+  status             JobStatus @default(queued)
+  region             String[]
+  competitorsInput   String[]  @map("competitors_input")
+  researchQuestion   String?   @map("research_question") @db.Text
+  result             Json?
+  hypothesesProposed Json?     @map("hypotheses_proposed")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  product     Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  experiments Experiment[]
+
+  @@map("market_reports")
+}
+
+model Experiment {
+  id             String           @id @default(uuid()) @db.Uuid
+  productId      String           @map("product_id") @db.Uuid
+  personaId      String           @map("persona_id") @db.Uuid
+  marketReportId String?          @map("market_report_id") @db.Uuid
+  slug           String
+  status         ExperimentStatus @default(draft)
+  hypothesis     String           @db.Text
+  marketSignal   String?          @map("market_signal") @db.Text
+  productVersion String?          @map("product_version")
+  objective      String?          @db.Text
+  strategy       Json?
+  channels       String[]         @default([])
+  budget         Json?
+  adPlatform     AdPlatform?      @map("ad_platform")
+  campaignName   String?          @map("campaign_name")
+  adCopy         String?          @map("ad_copy") @db.Text
+  landingPageUrl String?          @map("landing_page_url")
+  kpiPrimary     Json             @map("kpi_primary")
+  kpiSecondary   Json             @default("[]") @map("kpi_secondary")
+  startedAt      DateTime?        @map("started_at")
+  endsAt         DateTime?        @map("ends_at")
+  verdict        Verdict?
+  verdictNotes   String?          @map("verdict_notes") @db.Text
+  createdAt      DateTime         @default(now()) @map("created_at")
+
+  product           Product                 @relation(fields: [productId], references: [id], onDelete: Cascade)
+  persona           Persona                 @relation(fields: [personaId], references: [id])
+  marketReport      MarketReport?           @relation(fields: [marketReportId], references: [id])
+  snapshots         ExperimentSnapshot[]
+  reports           Report[]
+  hypothesisBacklog HypothesisBacklogItem[]
+
+  @@index([productId, status])
+  @@index([endsAt, status])
+  @@map("experiments")
+}
+
+model ExperimentSnapshot {
+  id                      String         @id @default(uuid()) @db.Uuid
+  experimentId            String         @map("experiment_id") @db.Uuid
+  // Denormalized for efficient daily report bulk query (avoids join through experiments)
+  productId               String         @map("product_id") @db.Uuid
+  date                    DateTime       @db.Date
+  kpiValues               Json           @map("kpi_values")
+  deltaVsPrevious         Json?          @map("delta_vs_previous")
+  recommendation          Recommendation
+  recommendationRationale String         @map("recommendation_rationale") @db.Text
+  // When the underlying ad platform data was fetched (ad platforms lag 24-48h)
+  dataFreshnessAt         DateTime?      @map("data_freshness_at")
+  createdAt               DateTime       @default(now()) @map("created_at")
+
+  experiment Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([experimentId, date])
+  @@index([experimentId, date])
+  @@index([productId, date])
+  @@map("experiment_snapshots")
+}
+
+model Report {
+  id            String     @id @default(uuid()) @db.Uuid
+  productId     String     @map("product_id") @db.Uuid
+  type          ReportType
+  experimentId  String?    @map("experiment_id") @db.Uuid
+  contentMd     String     @map("content_md") @db.Text
+  contentPdfUrl String?    @map("content_pdf_url")
+  agentModel    String     @map("agent_model")
+  // Version string of the prompt template used (e.g. "daily-report-v2")
+  // Enables auditing which reasoning produced which verdict
+  promptVersion String     @default("v1") @map("prompt_version")
+  createdAt     DateTime   @default(now()) @map("created_at")
+
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  experiment Experiment? @relation(fields: [experimentId], references: [id])
+
+  @@index([productId, type, createdAt])
+  @@map("reports")
+}
+
+model Job {
+  id            String    @id @default(uuid()) @db.Uuid
+  type          JobType
+  payload       Json
+  status        JobStatus @default(queued)
+  attempts      Int       @default(0)
+  scheduledAt   DateTime  @map("scheduled_at")
+  startedAt     DateTime? @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+  error         String?   @db.Text
+  // Heartbeat: worker updates every 60s. If lockedUntil has passed and status
+  // is still 'running', the job is considered stuck and reset to 'queued'.
+  heartbeatAt   DateTime? @map("heartbeat_at")
+  lockedUntil   DateTime? @map("locked_until")
+  // Prompt version used by the agent that ran this job
+  promptVersion String    @default("v1") @map("prompt_version")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  @@index([status, scheduledAt])
+  @@index([type, status])
+  @@map("jobs")
+}
+
+// OAuth tokens stored per product per provider.
+// accessToken and refreshToken should be encrypted at rest (use pgcrypto or app-level AES).
+model OAuthToken {
+  id           String        @id @default(uuid()) @db.Uuid
+  productId    String        @map("product_id") @db.Uuid
+  provider     OAuthProvider
+  accessToken  String        @map("access_token") @db.Text
+  refreshToken String?       @map("refresh_token") @db.Text
+  expiresAt    DateTime      @map("expires_at")
+  scopes       String[]
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, provider])
+  @@map("oauth_tokens")
+}
+
+// Hypothesis backlog as a proper table (replaces persona.hypothesisBacklog JSONB).
+// Enables status tracking, source attribution, and efficient querying.
+model HypothesisBacklogItem {
+  id          String           @id @default(uuid()) @db.Uuid
+  personaId   String           @map("persona_id") @db.Uuid
+  productId   String           @map("product_id") @db.Uuid
+  hypothesis  String           @db.Text
+  source      HypothesisSource @default(agent)
+  sourceExpId String?          @map("source_exp_id") @db.Uuid
+  status      HypothesisStatus @default(pending)
+  proposedAt  DateTime         @default(now()) @map("proposed_at")
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  persona   Persona     @relation(fields: [personaId], references: [id], onDelete: Cascade)
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sourceExp Experiment? @relation(fields: [sourceExpId], references: [id])
+
+  @@index([personaId, status])
+  @@index([productId])
+  @@map("hypothesis_backlog")
+}

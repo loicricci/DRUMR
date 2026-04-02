@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@drumr/web", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "Agent Worker",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@drumr/agent", "dev"],
+      "port": 0
+    }
+  ]
+}
