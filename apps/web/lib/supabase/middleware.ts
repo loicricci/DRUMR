@@ -33,7 +33,8 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/login") ||
     request.nextUrl.pathname.startsWith("/signup") ||
     request.nextUrl.pathname.startsWith("/verify") ||
-    request.nextUrl.pathname.startsWith("/auth/callback");
+    request.nextUrl.pathname.startsWith("/auth/callback") ||
+    request.nextUrl.pathname === "/api/health";
 
   if (!user && !isAuthPage && request.nextUrl.pathname !== "/") {
     const url = request.nextUrl.clone();
