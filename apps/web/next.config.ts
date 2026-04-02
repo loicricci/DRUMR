@@ -1,17 +1,17 @@
 import type { NextConfig } from "next";
 import { resolve } from "path";
 
-const prismaGenerated = "../../packages/db/src/generated/prisma/*";
+const prismaEngine = "../../node_modules/.pnpm/@prisma+client*/node_modules/.prisma/client/*";
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@drumr/db", "@drumr/types"],
   outputFileTracingRoot: resolve("../.."),
   outputFileTracingIncludes: {
-    "/api/**/*": [prismaGenerated],
-    "/dashboard": [prismaGenerated],
-    "/products/**/*": [prismaGenerated],
-    "/reports": [prismaGenerated],
-    "/settings": [prismaGenerated],
+    "/api/**/*": [prismaEngine],
+    "/dashboard": [prismaEngine],
+    "/products/**/*": [prismaEngine],
+    "/reports": [prismaEngine],
+    "/settings": [prismaEngine],
   },
 };
 
