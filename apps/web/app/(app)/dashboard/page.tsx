@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getProducts } from "@/lib/actions/products";
+import { getProducts } from "@/lib/data/products";
 import { Button } from "@/components/ui/button";
 import {
   Card,

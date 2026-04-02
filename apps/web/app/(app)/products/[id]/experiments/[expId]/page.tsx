@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getExperiment } from "@/lib/actions/experiments";
+import { getExperiment } from "@/lib/data/experiments";
 import { ExperimentDetailClient } from "@/components/experiments/experiment-detail";
 
 export default async function ExperimentDetailPage({

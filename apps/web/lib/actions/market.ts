@@ -48,15 +48,3 @@ export async function triggerMarketAnalysis(data: {
   return report;
 }
 
-export async function getMarketReports(productId: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return [];
-
-  return prisma.marketReport.findMany({
-    where: { product: { id: productId, accountId: user.id } },
-    orderBy: { createdAt: "desc" },
-  });
-}

@@ -1,5 +1,5 @@
-import { getReports } from "@/lib/actions/reports";
-import { getProducts } from "@/lib/actions/products";
+import { getReports } from "@/lib/data/reports";
+import { getProducts } from "@/lib/data/products";
 import { ReportsListClient } from "@/components/reports/reports-list";
 
 export default async function ReportsPage() {

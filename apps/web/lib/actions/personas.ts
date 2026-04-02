@@ -87,19 +87,6 @@ export async function updatePersona(
   return updated;
 }
 
-export async function getPersonas(productId: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return [];
-
-  return prisma.persona.findMany({
-    where: { product: { id: productId, accountId: user.id } },
-    orderBy: { updatedAt: "desc" },
-  });
-}
-
 export async function deletePersona(personaId: string) {
   const supabase = await createClient();
   const {

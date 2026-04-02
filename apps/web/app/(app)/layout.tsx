@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getOrCreateAccount } from "@/lib/actions/auth";
+import { getOrCreateAccount } from "@/lib/data/auth";
 import { AppSidebar } from "@/components/app-sidebar";
 
 export const dynamic = "force-dynamic";
