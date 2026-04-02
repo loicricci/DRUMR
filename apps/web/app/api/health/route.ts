@@ -24,12 +24,11 @@ export async function GET() {
     },
     fs: {
       "/var/task": ls("/var/task"),
-      "/var/task/node_modules/.prisma/client": ls("/var/task/node_modules/.prisma/client"),
-      "/var/task/node_modules/.prisma": ls("/var/task/node_modules/.prisma"),
-      "/var/task/node_modules": ls("/var/task/node_modules"),
-      "/var/task/apps": ls("/var/task/apps"),
-      "/var/task/apps/web": ls("/var/task/apps/web"),
-      "/var/task/apps/web/node_modules/.prisma/client": ls("/var/task/apps/web/node_modules/.prisma/client"),
+      "/var/task/packages": ls("/var/task/packages"),
+      "/var/task/packages/db": ls("/var/task/packages/db"),
+      "/var/task/packages/db/src": ls("/var/task/packages/db/src"),
+      "/var/task/packages/db/src/generated": ls("/var/task/packages/db/src/generated"),
+      "/var/task/packages/db/src/generated/client": ls("/var/task/packages/db/src/generated/client"),
     },
   };
 

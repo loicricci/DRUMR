@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@drumr/db", "@drumr/types"],
   outputFileTracingRoot: resolve("../.."),
   outputFileTracingIncludes: {
-    "/**/*": ["packages/db/src/generated/client/*"],
+    "/**/*": ["../../packages/db/src/generated/client/*"],
   },
 };
 
