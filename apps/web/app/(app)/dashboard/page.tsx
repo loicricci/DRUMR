@@ -21,7 +21,7 @@ export default async function DashboardPage() {
   const products = await getProducts();
 
   const totalExperiments = products.reduce(
-    (sum, p) => sum + p._count.experiments,
+    (sum: number, p) => sum + p._count.experiments,
     0
   );
 
