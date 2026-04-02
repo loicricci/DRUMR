@@ -1,4 +1,7 @@
 import { PrismaClient } from "./generated/client";
+import { existsSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -38,7 +41,21 @@ debugLog("H1", "packages/db/src/index.ts:_engineConfig", "Prisma engine config s
   engineType: engineConfig?.engineType ?? null,
 });
 
+const moduleFilePath = fileURLToPath(import.meta.url);
+const moduleDirPath = dirname(moduleFilePath);
+const generatedClientDir = join(moduleDirPath, "generated", "client");
+const prismaDebugMeta = {
+  moduleFilePath,
+  moduleDirPath,
+  generatedClientDir,
+  generatedClientDirExists: existsSync(generatedClientDir),
+  engineConfigDirname: engineConfig?.dirname ?? null,
+};
+
+debugLog("H5", "packages/db/src/index.ts:modulePath", "DB module runtime path snapshot", prismaDebugMeta);
+
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 export { prisma };
+export { prismaDebugMeta };
 export * from "./generated/client";

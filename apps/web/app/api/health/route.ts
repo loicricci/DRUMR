@@ -55,13 +55,19 @@ export async function GET() {
 
   try {
     const dbModule = await import("@drumr/db");
-    const { prisma } = dbModule;
+    const { prisma, prismaDebugMeta } = dbModule as any;
     debugLog("H2", "apps/web/app/api/health/route.ts:import @drumr/db", "Imported DB module", {
       exportedKeys: Object.keys(dbModule),
       prismaCtorName: (prisma as any)?.constructor?.name ?? null,
       engineDirname: (prisma as any)?._engineConfig?.dirname ?? null,
       generatorProvider: (prisma as any)?._engineConfig?.generator?.provider ?? null,
     });
+    checks.prismaRuntime = {
+      prismaCtorName: (prisma as any)?.constructor?.name ?? null,
+      engineDirname: (prisma as any)?._engineConfig?.dirname ?? null,
+      generatorProvider: (prisma as any)?._engineConfig?.generator?.provider ?? null,
+      moduleMeta: prismaDebugMeta ?? null,
+    };
     await prisma.$queryRaw`SELECT 1 as ok`;
     checks.database = "OK";
   } catch (e: any) {
