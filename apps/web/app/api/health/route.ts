@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { readdirSync, existsSync } from "fs";
+import { lookup } from "dns/promises";
+import net from "net";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,26 @@ function ls(dir: string): string[] | string {
   }
 }
 
+async function checkTcp(host: string, port: number, timeoutMs = 3000): Promise<string> {
+  return await new Promise((resolve) => {
+    const socket = new net.Socket();
+    let settled = false;
+
+    const done = (value: string) => {
+      if (settled) return;
+      settled = true;
+      socket.destroy();
+      resolve(value);
+    };
+
+    socket.setTimeout(timeoutMs);
+    socket.once("connect", () => done("CONNECTED"));
+    socket.once("timeout", () => done(`TIMEOUT_${timeoutMs}ms`));
+    socket.once("error", (err: any) => done(`ERROR_${err?.code ?? "UNKNOWN"}`));
+    socket.connect(port, host);
+  });
+}
+
 export async function GET() {
   debugLog("H4", "apps/web/app/api/health/route.ts:GET", "Health route entered", {
     cwd: process.cwd(),
@@ -52,6 +74,41 @@ export async function GET() {
       "/var/task/packages/db/src/generated/client": ls("/var/task/packages/db/src/generated/client"),
     },
   };
+
+  try {
+    const dbUrlRaw = process.env.DATABASE_URL;
+    if (!dbUrlRaw) {
+      checks.databaseNetwork = { status: "DATABASE_URL_MISSING" };
+    } else {
+      const dbUrl = new URL(dbUrlRaw);
+      const host = dbUrl.hostname;
+      const port = Number(dbUrl.port || "5432");
+      const dns = await lookup(host, { all: true });
+      const tcp = await checkTcp(host, port);
+      checks.databaseNetwork = {
+        host,
+        port,
+        protocol: dbUrl.protocol.replace(":", ""),
+        dns,
+        tcp,
+      };
+      debugLog("H7", "apps/web/app/api/health/route.ts:databaseNetwork", "Database network diagnostics", {
+        host,
+        port,
+        dnsCount: Array.isArray(dns) ? dns.length : 0,
+        tcp,
+      });
+    }
+  } catch (e: any) {
+    checks.databaseNetwork = {
+      error: e?.message ?? "network_check_failed",
+      name: e?.name ?? "Error",
+    };
+    debugLog("H7", "apps/web/app/api/health/route.ts:databaseNetwork catch", "Database network diagnostics failed", {
+      name: e?.name ?? null,
+      message: e?.message ?? null,
+    });
+  }
 
   try {
     const dbModule = await import("@drumr/db");
