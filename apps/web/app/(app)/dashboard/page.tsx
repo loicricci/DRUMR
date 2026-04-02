@@ -20,10 +20,10 @@ import {
 export default async function DashboardPage() {
   const products = await getProducts();
 
-  const totalExperiments = products.reduce<number>(
-    (sum, p) => sum + p._count.experiments,
-    0
-  );
+  let totalExperiments = 0;
+  for (const p of products) {
+    totalExperiments += p._count.experiments;
+  }
 
   return (
     <div className="space-y-8">
