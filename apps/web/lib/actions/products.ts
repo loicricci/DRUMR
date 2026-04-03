@@ -71,6 +71,7 @@ const updateProductSchema = z.object({
   category: z.string().min(1),
   stage: z.enum(["pre_launch", "live", "pre_revenue", "traction"]),
   regions: z.array(z.string()).min(1),
+  active: z.boolean(),
   githubRepo: z.string().optional().nullable(),
   ga4PropertyId: z.string().optional().nullable(),
   googleAdsCustomerId: z.string().optional().nullable(),
@@ -96,6 +97,7 @@ export async function updateProduct(id: string, formData: FormData) {
       .split(",")
       .map((r) => r.trim())
       .filter(Boolean),
+    active: formData.get("active") === "true",
     githubRepo: (formData.get("githubRepo") as string) || null,
     ga4PropertyId: (formData.get("ga4PropertyId") as string) || null,
     googleAdsCustomerId:
@@ -118,6 +120,29 @@ export async function updateProduct(id: string, formData: FormData) {
   revalidatePath(`/products/${id}`);
   revalidatePath("/dashboard");
   revalidatePath("/products");
+}
+
+export async function toggleProductActive(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const product = await prisma.product.findFirst({
+    where: { id, accountId: user.id },
+    select: { active: true },
+  });
+  if (!product) return;
+
+  await prisma.product.updateMany({
+    where: { id, accountId: user.id },
+    data: { active: !product.active },
+  });
+
+  revalidatePath("/dashboard");
+  revalidatePath("/products");
+  revalidatePath(`/products/${id}`);
 }
 
 export async function deleteProduct(id: string) {

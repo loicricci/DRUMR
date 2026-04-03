@@ -27,7 +27,7 @@ export function AppSidebar({ userName }: { userName: string }) {
     <aside className="fixed inset-y-0 left-0 z-30 flex w-60 flex-col border-r bg-card">
       <div className="flex h-14 items-center border-b px-4">
         <Link href="/dashboard" className="text-xl font-bold tracking-tight">
-          Drumr
+          DrumR
         </Link>
       </div>
 

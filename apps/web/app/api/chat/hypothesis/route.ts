@@ -7,7 +7,7 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const SYSTEM_PROMPT = `You are a hypothesis builder for Drumr, a product-market fit validation platform.
+const SYSTEM_PROMPT = `You are a hypothesis builder for DrumR, a product-market fit validation platform.
 
 Your job is to help the founder turn a raw idea into a sharp, falsifiable hypothesis.
 

@@ -62,7 +62,7 @@ export default function SignupPage() {
       <CardHeader>
         <CardTitle>Create account</CardTitle>
         <CardDescription>
-          Get started with Drumr to validate product-market fit
+          Get started with DrumR to validate product-market fit
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSignup}>

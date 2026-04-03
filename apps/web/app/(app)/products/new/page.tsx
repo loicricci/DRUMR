@@ -32,7 +32,7 @@ export default function NewProductPage() {
           Register a product
         </h1>
         <p className="text-muted-foreground">
-          Tell Drumr about your product so the CEO agent can start working for
+          Tell DrumR about your product so the CEO agent can start working for
           you.
         </p>
       </div>

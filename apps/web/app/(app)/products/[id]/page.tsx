@@ -23,6 +23,8 @@ import {
   BarChart3,
 } from "lucide-react";
 import { ProductEditDialog } from "@/components/product-edit-dialog";
+import { DeleteProductButton } from "@/components/delete-product-button";
+import { ProductActiveBadge } from "@/components/product-active-badge";
 
 const statusColors: Record<string, "default" | "success" | "warning" | "destructive" | "info" | "secondary"> = {
   draft: "secondary",
@@ -52,6 +54,7 @@ export default async function ProductHubPage({
             <h1 className="text-3xl font-bold tracking-tight">
               {product.name}
             </h1>
+            <ProductActiveBadge active={product.active} />
             <Badge variant="secondary">
               {product.stage.replace("_", "-")}
             </Badge>
@@ -63,7 +66,10 @@ export default async function ProductHubPage({
             <span>{product.regions.join(", ")}</span>
           </div>
         </div>
-        <ProductEditDialog product={product} />
+        <div className="flex gap-2">
+          <ProductEditDialog product={product} />
+          <DeleteProductButton productId={product.id} productName={product.name} />
+        </div>
       </div>
 
       {/* Data sources status */}

@@ -35,6 +35,7 @@ interface ProductEditDialogProps {
     category: string;
     stage: string;
     regions: string[];
+    active: boolean;
     githubRepo: string | null;
     ga4PropertyId: string | null;
     googleAdsCustomerId: string | null;
@@ -47,6 +48,7 @@ interface ProductEditDialogProps {
 export function ProductEditDialog({ product }: ProductEditDialogProps) {
   const [open, setOpen] = useState(false);
   const [stage, setStage] = useState(product.stage);
+  const [active, setActive] = useState(product.active);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -127,6 +129,35 @@ export function ProductEditDialog({ product }: ProductEditDialogProps) {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Status</Label>
+            <input type="hidden" name="active" value={active ? "true" : "false"} />
+            <button
+              type="button"
+              onClick={() => setActive(!active)}
+              className="flex w-full items-center gap-3 rounded-md border px-3 py-2 text-sm transition-colors hover:bg-muted"
+            >
+              <span
+                className={`inline-block h-2.5 w-2.5 rounded-full ${
+                  active
+                    ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.4)]"
+                    : "bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.4)]"
+                }`}
+              />
+              <span
+                className={
+                  active
+                    ? "font-medium text-emerald-700 dark:text-emerald-400"
+                    : "font-medium text-amber-700 dark:text-amber-400"
+                }
+              >
+                {active ? "Active" : "Under construction"}
+              </span>
+              <span className="ml-auto text-xs text-muted-foreground">
+                Click to toggle
+              </span>
+            </button>
           </div>
           <div className="space-y-2">
             <Label htmlFor="edit-regions">Target regions</Label>

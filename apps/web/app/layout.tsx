@@ -6,7 +6,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Drumr — P/M Fit Validation Platform",
+  title: "DrumR — P/M Fit Validation Platform",
   description:
     "Autonomous CEO agent that connects market intelligence, persona understanding, product state, and ad experiments.",
 };

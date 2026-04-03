@@ -46,7 +46,7 @@ function Nav() {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <IterationCcw className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold tracking-tight">Drumr</span>
+          <span className="text-lg font-bold tracking-tight">DrumR</span>
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
@@ -92,7 +92,7 @@ function Hero() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            Drumr is your autonomous CEO agent that connects market
+            DrumR is your autonomous CEO agent that connects market
             intelligence, persona understanding, and ad experiments — driving toward
             product-market fit through structured hypothesis validation.
           </p>
@@ -152,7 +152,7 @@ const features = [
     icon: BrainCircuit,
     title: "AI-powered personas",
     description:
-      "Build deep customer personas through guided AI conversations. Drumr understands who your users are and what drives them.",
+      "Build deep customer personas through guided AI conversations. DrumR understands who your users are and what drives them.",
   },
   {
     icon: BarChart3,
@@ -195,7 +195,7 @@ function Features() {
             Everything you need to find P/M fit
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            From market research to experiment validation — Drumr automates the
+            From market research to experiment validation — DrumR automates the
             entire product-market fit discovery process.
           </p>
         </div>
@@ -238,7 +238,7 @@ const steps = [
     step: "03",
     title: "Run experiments",
     description:
-      "Design hypotheses, set success criteria, and launch experiments. Drumr tracks results and delivers verdicts.",
+      "Design hypotheses, set success criteria, and launch experiments. DrumR tracks results and delivers verdicts.",
   },
   {
     step: "04",
@@ -293,7 +293,7 @@ function CTA() {
             Ready to validate your P/M fit?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Join founders and product teams using Drumr to make data-driven
+            Join founders and product teams using DrumR to make data-driven
             decisions and find product-market fit faster.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -320,7 +320,7 @@ function Footer() {
           <div className="flex h-6 w-6 items-center justify-center rounded bg-primary">
             <IterationCcw className="h-3 w-3 text-primary-foreground" />
           </div>
-          <span className="font-medium text-foreground">Drumr</span>
+          <span className="font-medium text-foreground">DrumR</span>
           <span>&middot;</span>
           <span>&copy; {new Date().getFullYear()}</span>
         </div>

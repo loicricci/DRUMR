@@ -16,13 +16,16 @@ import {
   ArrowRight,
   BarChart3,
 } from "lucide-react";
+import { ProductActiveBadge } from "@/components/product-active-badge";
 
 export default async function DashboardPage() {
   const products = await getProducts();
 
   let totalExperiments = 0;
+  let activeCount = 0;
   for (const p of products) {
     totalExperiments += p._count.experiments;
+    if (p.active) activeCount++;
   }
 
   return (
@@ -53,7 +56,7 @@ export default async function DashboardPage() {
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{products.length}</div>
+            <div className="text-2xl font-bold">{activeCount}</div>
           </CardContent>
         </Card>
         <Card>
@@ -114,7 +117,10 @@ export default async function DashboardPage() {
                         {product.description}
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary">{product.stage.replace("_", "-")}</Badge>
+                    <div className="flex items-center gap-2">
+                      <ProductActiveBadge active={product.active} />
+                      <Badge variant="secondary">{product.stage.replace("_", "-")}</Badge>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>

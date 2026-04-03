@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Package, Plus, ArrowRight } from "lucide-react";
+import { ProductActiveBadge } from "@/components/product-active-badge";
 
 export default async function ProductsPage() {
   const products = await getProducts();
@@ -60,9 +61,12 @@ export default async function ProductsPage() {
                       {product.description}
                     </CardDescription>
                   </div>
-                  <Badge variant="secondary">
-                    {product.stage.replace("_", "-")}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    <ProductActiveBadge active={product.active} />
+                    <Badge variant="secondary">
+                      {product.stage.replace("_", "-")}
+                    </Badge>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>

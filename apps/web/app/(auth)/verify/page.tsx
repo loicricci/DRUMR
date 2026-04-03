@@ -15,7 +15,7 @@ export default function VerifyPage() {
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">
           We&apos;ve sent you a verification link. Click it to activate your
-          account and start using Drumr.
+          account and start using DrumR.
         </p>
         <Button asChild variant="outline">
           <Link href="/login">Back to sign in</Link>

@@ -7,6 +7,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function resolveEngineLibraryPath() {
+  if (process.platform !== "linux") return undefined;
   const candidates = [
     "/var/task/packages/db/src/generated/client/libquery_engine-rhel-openssl-3.0.x.so.node",
     join(process.cwd(), "../../packages/db/src/generated/client/libquery_engine-rhel-openssl-3.0.x.so.node"),

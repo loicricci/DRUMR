@@ -61,12 +61,12 @@ export async function POST(request: NextRequest) {
       })
       .join("")}
     <hr />
-    <p style="color: #737373; font-size: 12px;">Sent by Drumr — P/M Fit Validation Platform</p>
+    <p style="color: #737373; font-size: 12px;">Sent by DrumR — P/M Fit Validation Platform</p>
   `;
 
   try {
     await getResend().emails.send({
-      from: "Drumr <reports@drumr.app>",
+      from: "DrumR <reports@drumr.app>",
       to: product.account.email,
       subject: `Daily Report — ${product.name} — ${new Date().toLocaleDateString()}`,
       html: htmlContent,

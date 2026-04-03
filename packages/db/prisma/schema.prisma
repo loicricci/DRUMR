@@ -117,6 +117,7 @@ model Product {
   twitterAdsAccountId  String?      @map("twitter_ads_account_id")
   linkedinAdsAccountId String?      @map("linkedin_ads_account_id")
   resendAudienceId     String?      @map("resend_audience_id")
+  active               Boolean      @default(true)
   createdAt            DateTime     @default(now()) @map("created_at")
 
   account             Account                 @relation(fields: [accountId], references: [id], onDelete: Cascade)

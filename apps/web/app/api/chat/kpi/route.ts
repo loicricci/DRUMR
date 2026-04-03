@@ -7,7 +7,7 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const SYSTEM_PROMPT = `You are a KPI builder for Drumr, a product-market fit validation platform.
+const SYSTEM_PROMPT = `You are a KPI builder for DrumR, a product-market fit validation platform.
 
 Based on the experiment hypothesis and ad platform, propose appropriate KPIs with realistic thresholds.
 
