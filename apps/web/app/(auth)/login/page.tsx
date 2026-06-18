@@ -3,24 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { toast } from "sonner";
+
+const inputClassName =
+  "h-12 w-full rounded-xl border border-white/15 bg-white/[0.04] px-4 text-sm text-landing-fg placeholder:text-landing-muted-fg/70 outline-none transition-colors focus:border-landing-accent/40 focus:bg-white/[0.06] disabled:opacity-60";
+
+const labelClassName =
+  "mb-2 block text-sm font-medium text-landing-muted-fg";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -44,75 +41,108 @@ export default function LoginPage() {
   }
 
   async function handleGoogleLogin() {
+    setGoogleLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
-    if (error) toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      setGoogleLoading(false);
+    }
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Sign in</CardTitle>
-        <CardDescription>
-          Enter your credentials to access your account
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleLogin}>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-3">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in..." : "Sign in"}
-          </Button>
-          <div className="relative w-full">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">or</span>
-            </div>
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={handleGoogleLogin}
-          >
-            Continue with Google
-          </Button>
-          <p className="text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary underline">
-              Sign up
-            </Link>
-          </p>
-        </CardFooter>
+    <div className="rounded-2xl border border-white/[0.08] bg-landing-surface/80 p-8 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:p-10">
+      <div className="mb-8">
+        <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
+          Welcome back
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-landing-fg">
+          Sign in
+        </h1>
+        <p className="mt-2 text-sm leading-relaxed text-landing-muted-fg">
+          Access your DrumR workspace, with ideation, PSF, and PMF in one place.
+        </p>
+      </div>
+
+      <form onSubmit={handleLogin} className="space-y-5">
+        <div>
+          <label htmlFor="email" className={labelClassName}>
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="you@company.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={loading}
+            className={inputClassName}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className={labelClassName}>
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={loading}
+            className={inputClassName}
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="inline-flex h-12 w-full items-center justify-center rounded-full bg-landing-accent text-sm font-semibold text-landing-ink transition-all hover:bg-landing-accent/90 disabled:opacity-60"
+        >
+          {loading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            "Sign in"
+          )}
+        </button>
       </form>
-    </Card>
+
+      <div className="my-6 flex items-center gap-4">
+        <div className="h-px flex-1 bg-white/10" />
+        <span className="text-xs uppercase tracking-wider text-landing-muted-fg">
+          or
+        </span>
+        <div className="h-px flex-1 bg-white/10" />
+      </div>
+
+      <button
+        type="button"
+        onClick={handleGoogleLogin}
+        disabled={googleLoading || loading}
+        className="inline-flex h-12 w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-sm font-medium text-landing-fg transition-all hover:border-white/25 hover:bg-white/[0.06] disabled:opacity-60"
+      >
+        {googleLoading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          "Continue with Google"
+        )}
+      </button>
+
+      <p className="mt-8 text-center text-sm text-landing-muted-fg">
+        Don&apos;t have access yet?{" "}
+        <Link
+          href="/#waitlist"
+          className="font-medium text-landing-fg underline-offset-4 hover:underline"
+        >
+          Join the waitlist
+        </Link>
+      </p>
+    </div>
   );
 }

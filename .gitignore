@@ -7,3 +7,6 @@ dist
 .env.*.local
 *.tsbuildinfo
 packages/db/src/generated
+
+# Standalone Claude Code kit — tracked in its own repo (loicricci/DrumR_Ideation)
+drumr-ideation-kit/

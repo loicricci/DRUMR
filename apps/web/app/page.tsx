@@ -1,16 +1,23 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/landing/brand-logo";
+import { AgentFleet } from "@/components/landing/agent-fleet";
+import { IntegrationLogos } from "@/components/landing/integration-logos";
+import { ProjectLifecycleVisual } from "@/components/landing/project-lifecycle-visual";
+import { WaitlistForm } from "@/components/landing/waitlist-form";
 import {
   ArrowRight,
-  BarChart3,
-  BrainCircuit,
+  Briefcase,
+  Compass,
   FlaskConical,
-  IterationCcw,
+  Gauge,
+  Globe,
+  Lightbulb,
+  Repeat,
+  Rocket,
+  ShieldCheck,
   Target,
-  Users,
-  Zap,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -26,13 +33,26 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative min-h-screen bg-landing-bg text-landing-fg">
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[900px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 70% 20%, rgba(126,252,184,0.07), transparent 60%), radial-gradient(ellipse 50% 40% at 10% 80%, rgba(126,252,184,0.04), transparent 50%)",
+        }}
+        aria-hidden
+      />
+
       <Nav />
-      <Hero />
-      <LogoBar />
-      <Features />
-      <HowItWorks />
-      <CTA />
+      <main>
+        <Hero />
+        <LogoBar />
+        <InnovationStages />
+        <Methodology />
+        <AgentFleet />
+        <Features />
+        <CTA />
+      </main>
       <Footer />
     </div>
   );
@@ -40,33 +60,38 @@ export default async function Home() {
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <IterationCcw className="h-4 w-4 text-primary-foreground" />
-          </div>
-          <span className="text-lg font-bold tracking-tight">DrumR</span>
+    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-landing-bg/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-6 lg:px-10">
+        <Link href="/" className="transition-opacity hover:opacity-80">
+          <BrandLogo size="sm" />
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
-          <a href="#features" className="transition-colors hover:text-foreground">
+        <nav className="hidden items-center gap-10 text-sm font-medium text-landing-muted-fg md:flex">
+          <a href="#features" className="transition-colors hover:text-landing-fg">
             Features
           </a>
-          <a href="#how-it-works" className="transition-colors hover:text-foreground">
-            How it works
+          <a href="#stages" className="transition-colors hover:text-landing-fg">
+            Stages
+          </a>
+          <a href="#agents" className="transition-colors hover:text-landing-fg">
+            Agents
           </a>
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/login">Sign in</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link href="/signup">
-              Get started <ArrowRight className="ml-1 h-3.5 w-3.5" />
-            </Link>
-          </Button>
+          <Link
+            href="/login"
+            className="hidden text-sm font-medium text-landing-muted-fg transition-colors hover:text-landing-fg sm:inline-flex"
+          >
+            Sign in
+          </Link>
+          <a
+            href="#waitlist"
+            className="inline-flex items-center gap-2 rounded-full bg-landing-accent px-5 py-2.5 text-sm font-semibold text-landing-ink transition-all hover:bg-landing-accent/90"
+          >
+            Join waitlist
+            <ArrowRight className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </header>
@@ -76,41 +101,24 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--color-muted)_0%,_transparent_50%)]" />
-      <div className="mx-auto max-w-6xl px-6 pb-24 pt-24 md:pb-32 md:pt-32">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border bg-background px-4 py-1.5 text-sm text-muted-foreground">
-            <Zap className="h-3.5 w-3.5 text-warning" />
-            Autonomous P/M fit validation
-          </div>
-
-          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-            Stop guessing.{" "}
-            <span className="bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
-              Start validating.
-            </span>
+      <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-32 lg:pt-24">
+        <div>
+          <h1 className="font-display text-[2.625rem] font-normal leading-[1.08] tracking-[-0.02em] text-landing-fg sm:text-5xl lg:text-[3.75rem]">
+            The agentic operating system for innovation
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            DrumR is your autonomous CEO agent that connects market
-            intelligence, persona understanding, and ad experiments — driving toward
-            product-market fit through structured hypothesis validation.
+          <p className="mt-7 max-w-lg text-base leading-relaxed text-landing-muted-fg md:text-lg md:leading-relaxed">
+            Reaching product-market fit shouldn&apos;t be guesswork. DrumR puts
+            specialized AI agents around a gated process, from Idea, Problem
+            Solution Fit to Product Market Fit, so every decision is grounded in
+            real data, not just conviction.
           </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button size="lg" asChild className="w-full sm:w-auto">
-              <Link href="/signup">
-                Create free account <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
-              <Link href="/login">Sign in to your account</Link>
-            </Button>
-          </div>
+          <WaitlistForm source="hero" showSignInHint className="mt-10" />
+        </div>
 
-          <p className="mt-4 text-xs text-muted-foreground">
-            No credit card required. Start validating in minutes.
-          </p>
+        <div className="relative">
+          <ProjectLifecycleVisual />
         </div>
       </div>
     </section>
@@ -119,29 +127,12 @@ function Hero() {
 
 function LogoBar() {
   return (
-    <section className="border-y bg-muted/30 py-8">
-      <div className="mx-auto max-w-6xl px-6">
-        <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
+    <section className="border-y border-white/[0.06] bg-landing-muted/40 py-14">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <p className="text-center text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-muted-fg">
           Integrates with the tools you already use
         </p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-sm font-medium text-muted-foreground">
-          <span className="flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-success" />
-            GitHub
-          </span>
-          <span className="flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-info" />
-            Google Analytics
-          </span>
-          <span className="flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-warning" />
-            Google Ads
-          </span>
-          <span className="flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-foreground" />
-            X / Twitter Ads
-          </span>
-        </div>
+        <IntegrationLogos className="mt-10" />
       </div>
     </section>
   );
@@ -149,71 +140,77 @@ function LogoBar() {
 
 const features = [
   {
-    icon: BrainCircuit,
-    title: "AI-powered personas",
+    icon: Lightbulb,
+    title: "Idea scoring",
     description:
-      "Build deep customer personas through guided AI conversations. DrumR understands who your users are and what drives them.",
-  },
-  {
-    icon: BarChart3,
-    title: "Automated market analysis",
-    description:
-      "Get real-time market intelligence powered by AI research. Understand your competitive landscape without hours of manual work.",
+      "Generate ideas from your prompt and market intelligence, then rank each on viability, desirability, and feasibility, scored 0 to 10.",
   },
   {
     icon: FlaskConical,
-    title: "Experiment builder",
+    title: "PSF validation",
     description:
-      "Design falsifiable experiments with a structured 7-step flow. Validate hypotheses with real data, not assumptions.",
+      "Build hypotheses, profile personas, run early experiments, and draft POCs, collecting real user data before you scale.",
   },
   {
-    icon: Target,
-    title: "Daily CEO reports",
+    icon: Rocket,
+    title: "PMF acceleration",
     description:
-      "Receive actionable daily reports with clear CONTINUE, PUSH, or PAUSE recommendations. Always know what to do next.",
+      "Refine personas, architect your MVP, launch go-to-market experiments, and track KPIs until demand is repeatable.",
   },
   {
-    icon: IterationCcw,
-    title: "Verdict loop",
+    icon: Briefcase,
+    title: "CEO progress reports",
     description:
-      "Automatically update personas and propose next experiments based on results. The loop never stops learning.",
+      "Receive structured progress reports across every stage, covering what moved, what stalled, and what needs attention next.",
   },
   {
-    icon: Users,
-    title: "Team email digests",
+    icon: ShieldCheck,
+    title: "Governance gates",
     description:
-      "Keep your whole team aligned with daily email summaries of experiment progress, insights, and next steps.",
+      "A governance agent reviews evidence at each gate and recommends whether you need more information or can advance.",
+  },
+  {
+    icon: Globe,
+    title: "Market intelligence",
+    description:
+      "AI-powered research feeds every stage, from idea generation through competitive positioning at launch.",
   },
 ];
 
 function Features() {
   return (
-    <section id="features" className="py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Everything you need to find P/M fit
+    <section id="features" className="py-28 md:py-36">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="max-w-2xl">
+          <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
+            Platform
+          </p>
+          <h2 className="mt-4 font-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-landing-fg sm:text-5xl">
+            Built for every stage of innovation
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            From market research to experiment validation — DrumR automates the
-            entire product-market fit discovery process.
+          <p className="mt-5 text-lg leading-relaxed text-landing-muted-fg">
+            From scored ideas to validated solution and repeatable market
+            demand. DrumR runs the full innovation pipeline with agents at
+            every stage.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-20 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <div
+            <article
               key={feature.title}
-              className="group rounded-xl border bg-card p-6 transition-colors hover:border-foreground/20"
+              className="group rounded-2xl border border-white/[0.06] bg-landing-surface/60 p-7 transition-all duration-300 hover:border-landing-accent/20 hover:bg-landing-surface"
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                <feature.icon className="h-5 w-5 text-foreground" />
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-landing-accent transition-colors group-hover:border-landing-accent/20 group-hover:bg-landing-accent/10">
+                <feature.icon className="h-5 w-5" strokeWidth={1.5} />
               </div>
-              <h3 className="font-semibold">{feature.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <h3 className="font-brand text-base font-semibold tracking-tight text-landing-fg">
+                {feature.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-landing-muted-fg">
                 {feature.description}
               </p>
-            </div>
+            </article>
           ))}
         </div>
       </div>
@@ -221,63 +218,184 @@ function Features() {
   );
 }
 
-const steps = [
+const stages = [
   {
     step: "01",
-    title: "Register your product",
+    label: "Idea",
+    title: "Generate and rank ideas",
     description:
-      "Describe your product and optionally connect your data sources — GitHub, Google Analytics, Google Ads, or X Ads.",
+      "Submit a prompt enriched by market intelligence. The Ideator generates concepts and scores each on viability, desirability, and feasibility (0–10) before anything gets built.",
+    icon: Lightbulb,
+    agents: ["Ideator", "Market Intelligence"],
   },
   {
     step: "02",
-    title: "Build your personas",
+    label: "PSF",
+    title: "Validate the solution",
     description:
-      "Use AI-guided conversations to create deep, nuanced customer personas that evolve as you learn.",
+      "Shape hypotheses, profile personas, run early experiments, and draft POCs. The Early Data Manager collects real signals from users while you prove product-solution fit.",
+    icon: FlaskConical,
+    agents: ["Hypothesis Builder", "Persona Profiler", "Early Data Manager", "POC Agent"],
   },
   {
     step: "03",
-    title: "Run experiments",
+    label: "PMF",
+    title: "Validate your product",
     description:
-      "Design hypotheses, set success criteria, and launch experiments. DrumR tracks results and delivers verdicts.",
-  },
-  {
-    step: "04",
-    title: "Close the loop",
-    description:
-      "Get daily CEO reports, act on recommendations, and watch your personas and strategy refine automatically.",
+      "Refine personas, architect the MVP, launch go-to-market motions, and track KPIs. Scale only when the data confirms repeatable product-market fit.",
+    icon: Target,
+    agents: ["Persona Refiner", "MVP Architect", "Go-to-Market Agent", "KPI Analyst"],
   },
 ];
 
-function HowItWorks() {
+const methodologies = [
+  {
+    icon: Compass,
+    name: "Design Thinking",
+    principle: "Desirability",
+    description:
+      "Start from the human. Agents profile personas, surface real pain points, and prototype concepts so you build what people actually want.",
+  },
+  {
+    icon: Gauge,
+    name: "Lean Startup",
+    principle: "Validated learning",
+    description:
+      "Build, measure, learn fast. Every hypothesis becomes a cheap experiment, and decisions are made on real signals, never opinions.",
+  },
+  {
+    icon: Repeat,
+    name: "Agile",
+    principle: "Continuous iteration",
+    description:
+      "Move in tight loops. Work advances in short cycles with governance gates that decide when to iterate, pivot, or scale.",
+  },
+];
+
+function Methodology() {
   return (
-    <section id="how-it-works" className="border-t bg-muted/20 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            How it works
+    <section
+      id="methodology"
+      className="border-t border-white/[0.06] py-28 md:py-36"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="max-w-2xl">
+          <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
+            Methodology
+          </p>
+          <h2 className="mt-4 font-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-landing-fg sm:text-5xl">
+            The best of every innovation playbook
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Four steps to systematic product-market fit validation.
+          <p className="mt-5 text-lg leading-relaxed text-landing-muted-fg">
+            DrumR distills decades of proven practice: Design Thinking, Lean
+            Startup, and Agile bundled into one continuous, agent-driven loop.
+            The result is the leanest, most data-driven path from idea to
+            product-market fit.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, i) => (
-            <div key={step.step} className="relative">
-              {i < steps.length - 1 && (
-                <div className="absolute right-0 top-8 hidden h-px w-6 bg-border lg:block" />
-              )}
-              <div className="rounded-xl border bg-card p-6">
-                <span className="text-2xl font-bold text-muted-foreground/40">
-                  {step.step}
-                </span>
-                <h3 className="mt-3 font-semibold">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
+        <div className="mt-20 grid gap-5 lg:grid-cols-3">
+          {methodologies.map((method) => (
+            <article
+              key={method.name}
+              className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-landing-surface/60 p-8 transition-all duration-300 hover:border-landing-accent/20 hover:bg-landing-surface"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.08] bg-landing-accent/10 text-landing-accent transition-colors group-hover:border-landing-accent/25">
+                  <method.icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="font-brand text-lg font-semibold tracking-tight text-landing-fg">
+                    {method.name}
+                  </h3>
+                  <p className="font-brand text-xs font-medium uppercase tracking-[0.14em] text-landing-accent/70">
+                    {method.principle}
+                  </p>
+                </div>
               </div>
-            </div>
+              <p className="mt-6 text-sm leading-relaxed text-landing-muted-fg">
+                {method.description}
+              </p>
+            </article>
           ))}
+        </div>
+
+        <div className="mt-10 flex flex-col items-start gap-4 rounded-2xl border border-landing-accent/15 bg-landing-accent/[0.06] p-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-2xl font-display text-xl font-normal leading-snug tracking-[-0.01em] text-landing-fg sm:text-2xl">
+            One loop. Human-centered, evidence-based, and relentlessly iterative,
+            so you only scale what the data confirms.
+          </p>
+          <Link
+            href="#waitlist"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-landing-accent px-5 py-2.5 font-brand text-sm font-semibold text-landing-bg transition-opacity hover:opacity-90"
+          >
+            Join waitlist
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InnovationStages() {
+  return (
+    <section
+      id="stages"
+      className="border-t border-white/[0.06] bg-landing-muted/30 py-28 md:py-36"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="max-w-2xl">
+          <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
+            Innovation pipeline
+          </p>
+          <h2 className="mt-4 font-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-landing-fg sm:text-5xl">
+            Three stages. One continuous loop.
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-landing-muted-fg">
+            DrumR moves with your concept through multiple steps, from Idea
+            generation to product-solution fit to product-market fit, supported
+            by dedicated agents at each gate and governance oversight throughout.
+          </p>
+        </div>
+
+        <div className="relative mt-20">
+          <div className="grid gap-6 lg:grid-cols-3">
+            {stages.map((stage) => (
+              <article
+                key={stage.label}
+                className="relative rounded-2xl border border-white/[0.06] bg-landing-surface/60 p-8 transition-all duration-300 hover:border-landing-accent/20 hover:bg-landing-surface"
+              >
+                <div className="mb-6 flex items-center justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.08] bg-landing-accent/10 text-landing-accent">
+                    <stage.icon className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  <span className="rounded-full border border-landing-accent/20 bg-landing-accent/10 px-3 py-1 font-brand text-xs font-semibold tracking-wide text-landing-accent">
+                    {stage.label}
+                  </span>
+                </div>
+                <span className="font-display text-3xl font-normal text-landing-accent/50">
+                  {stage.step}
+                </span>
+                <h3 className="mt-3 font-display text-2xl font-normal tracking-[-0.02em] text-landing-fg">
+                  {stage.title}
+                </h3>
+                <p className="mt-4 text-sm leading-relaxed text-landing-muted-fg">
+                  {stage.description}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-1.5">
+                  {stage.agents.map((agent) => (
+                    <span
+                      key={agent}
+                      className="rounded-md border border-white/[0.06] bg-white/[0.03] px-2 py-1 font-brand text-[0.625rem] font-medium text-landing-muted-fg"
+                    >
+                      {agent}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -286,25 +404,35 @@ function HowItWorks() {
 
 function CTA() {
   return (
-    <section className="py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto max-w-3xl rounded-2xl border bg-card p-8 text-center sm:p-12">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Ready to validate your P/M fit?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Join founders and product teams using DrumR to make data-driven
-            decisions and find product-market fit faster.
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button size="lg" asChild>
-              <Link href="/signup">
-                Create your account <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/login">Sign in</Link>
-            </Button>
+    <section id="waitlist" className="scroll-mt-24 py-28 md:py-36">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-landing-surface px-8 py-14 sm:px-14 sm:py-16">
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 20% 30%, rgba(126,252,184,0.12), transparent 50%)",
+            }}
+            aria-hidden
+          />
+          <div className="relative max-w-2xl">
+            <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
+              Early access
+            </p>
+            <h2 className="mt-4 font-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-landing-fg sm:text-5xl">
+              Join the waitlist
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-landing-muted-fg md:text-lg">
+              Be first in line for DrumR, the agentic innovation platform from
+              Idea, Problem Solution Fit to Product Market Fit. We&apos;ll
+              notify you when spots open.
+            </p>
+            <WaitlistForm
+              source="cta"
+              variant="stacked"
+              className="mt-10"
+              showSignInHint
+            />
           </div>
         </div>
       </div>
@@ -314,23 +442,21 @@ function CTA() {
 
 function Footer() {
   return (
-    <footer className="border-t py-8">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-primary">
-            <IterationCcw className="h-3 w-3 text-primary-foreground" />
-          </div>
-          <span className="font-medium text-foreground">DrumR</span>
-          <span>&middot;</span>
-          <span>&copy; {new Date().getFullYear()}</span>
+    <footer className="border-t border-white/[0.06] py-10">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 sm:flex-row lg:px-10">
+        <div className="flex items-center gap-4">
+          <BrandLogo size="sm" />
+          <span className="text-sm text-landing-muted-fg">
+            &copy; {new Date().getFullYear()} DrumR
+          </span>
         </div>
-        <div className="flex gap-6 text-sm text-muted-foreground">
-          <Link href="/login" className="transition-colors hover:text-foreground">
+        <div className="flex gap-8 text-sm text-landing-muted-fg">
+          <Link href="/login" className="transition-colors hover:text-landing-fg">
             Sign in
           </Link>
-          <Link href="/signup" className="transition-colors hover:text-foreground">
-            Register
-          </Link>
+          <a href="#waitlist" className="transition-colors hover:text-landing-fg">
+            Join waitlist
+          </a>
         </div>
       </div>
     </footer>

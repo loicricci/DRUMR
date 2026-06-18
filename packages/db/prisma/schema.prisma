@@ -323,3 +323,12 @@ model HypothesisBacklogItem {
   @@index([productId])
   @@map("hypothesis_backlog")
 }
+
+model WaitlistEntry {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  source    String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("waitlist_entries")
+}
