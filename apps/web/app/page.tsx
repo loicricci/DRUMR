@@ -104,10 +104,15 @@ function Hero() {
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-32 lg:pt-24">
         <div>
           <h1 className="font-display text-[2.625rem] font-normal leading-[1.08] tracking-[-0.02em] text-landing-fg sm:text-5xl lg:text-[3.75rem]">
-            The agentic operating system for innovation
+            Turning ideas into something{" "}
+            <span className="serif-em">people want</span>
           </h1>
 
-          <p className="mt-7 max-w-lg text-base leading-relaxed text-landing-muted-fg md:text-lg md:leading-relaxed">
+          <p className="mt-5 font-display text-xl italic leading-snug text-landing-fg/85 sm:text-2xl">
+            The agentic operating system for innovation
+          </p>
+
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-landing-muted-fg md:text-lg md:leading-relaxed">
             Reaching product-market fit shouldn&apos;t be guesswork. DrumR puts
             specialized AI agents around a gated process, from Idea, Problem
             Solution Fit to Product Market Fit, so every decision is grounded in
@@ -179,7 +184,7 @@ const features = [
 
 function Features() {
   return (
-    <section id="features" className="py-28 md:py-36">
+    <section id="features" className="py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-2xl">
           <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
@@ -276,7 +281,7 @@ function Methodology() {
   return (
     <section
       id="methodology"
-      className="border-t border-white/[0.06] py-28 md:py-36"
+      className="border-t border-white/[0.06] py-20 md:py-28"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-2xl">
@@ -284,7 +289,8 @@ function Methodology() {
             Methodology
           </p>
           <h2 className="mt-4 font-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-landing-fg sm:text-5xl">
-            The best of every innovation playbook
+            The best of <span className="serif-em">every</span> innovation
+            playbook
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-landing-muted-fg">
             DrumR distills decades of proven practice: Design Thinking, Lean
@@ -322,8 +328,9 @@ function Methodology() {
 
         <div className="mt-10 flex flex-col items-start gap-4 rounded-2xl border border-landing-accent/15 bg-landing-accent/[0.06] p-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-2xl font-display text-xl font-normal leading-snug tracking-[-0.01em] text-landing-fg sm:text-2xl">
-            One loop. Human-centered, evidence-based, and relentlessly iterative,
-            so you only scale what the data confirms.
+            <span className="serif-em">One loop.</span> Human-centered,
+            evidence-based, and relentlessly iterative, so you only scale what
+            the data confirms.
           </p>
           <Link
             href="#waitlist"
@@ -342,7 +349,7 @@ function InnovationStages() {
   return (
     <section
       id="stages"
-      className="border-t border-white/[0.06] bg-landing-muted/30 py-28 md:py-36"
+      className="border-t border-white/[0.06] bg-landing-muted/30 py-20 md:py-28"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-2xl">
@@ -350,7 +357,7 @@ function InnovationStages() {
             Innovation pipeline
           </p>
           <h2 className="mt-4 font-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-landing-fg sm:text-5xl">
-            Three stages. One continuous loop.
+            Three stages. <span className="serif-em">One continuous loop.</span>
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-landing-muted-fg">
             DrumR moves with your concept through multiple steps, from Idea
@@ -404,7 +411,7 @@ function InnovationStages() {
 
 function CTA() {
   return (
-    <section id="waitlist" className="scroll-mt-24 py-28 md:py-36">
+    <section id="waitlist" className="scroll-mt-24 py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-landing-surface px-8 py-14 sm:px-14 sm:py-16">
           <div

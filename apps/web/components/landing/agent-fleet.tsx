@@ -195,7 +195,7 @@ export function AgentFleet() {
   };
 
   return (
-    <section id="agents" className="scroll-mt-24 py-28 md:py-36">
+    <section id="agents" className="scroll-mt-24 py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-2xl">
           <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
