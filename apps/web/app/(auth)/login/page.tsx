@@ -123,15 +123,10 @@ export default function LoginPage() {
 
       <button
         type="button"
-        onClick={handleGoogleLogin}
-        disabled={googleLoading || loading}
-        className="inline-flex h-12 w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-sm font-medium text-landing-fg transition-all hover:border-white/25 hover:bg-white/[0.06] disabled:opacity-60"
+        disabled
+        className="inline-flex h-12 w-full cursor-not-allowed items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-sm font-medium text-landing-muted-fg/40"
       >
-        {googleLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          "Continue with Google"
-        )}
+        Continue with Google
       </button>
 
       <p className="mt-8 text-center text-sm text-landing-muted-fg">

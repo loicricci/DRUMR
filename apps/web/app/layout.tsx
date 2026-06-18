@@ -25,6 +25,10 @@ export const metadata: Metadata = {
   title: "DrumR, the agentic operating system for innovation",
   description:
     "Autonomous CEO agent guiding teams from ideation through product-solution fit to product-market fit.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
