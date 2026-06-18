@@ -12,6 +12,7 @@ import {
   Compass,
   FlaskConical,
   Gauge,
+  Github,
   Globe,
   Lightbulb,
   Repeat,
@@ -61,12 +62,12 @@ export default async function Home() {
 function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-landing-bg/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-6 lg:px-10">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
         <Link href="/" className="transition-opacity hover:opacity-80">
-          <BrandLogo size="sm" />
+          <BrandLogo size="md" />
         </Link>
 
-        <nav className="hidden items-center gap-10 text-sm font-medium text-landing-muted-fg md:flex">
+        <nav className="hidden items-center gap-16 text-sm font-medium text-landing-muted-fg md:flex">
           <a href="#features" className="transition-colors hover:text-landing-fg">
             Features
           </a>
@@ -78,7 +79,7 @@ function Nav() {
           </a>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-6">
           <Link
             href="/login"
             className="hidden text-sm font-medium text-landing-muted-fg transition-colors hover:text-landing-fg sm:inline-flex"
@@ -101,25 +102,27 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-32 lg:pt-24">
-        <div>
-          <h1 className="font-display text-[2.625rem] font-normal leading-[1.08] tracking-[-0.02em] text-landing-fg sm:text-5xl lg:text-[3.75rem]">
-            Turning ideas into something{" "}
-            <span className="serif-em">people want</span>
-          </h1>
+      <div className="mx-auto grid max-w-7xl items-stretch gap-12 px-6 pb-24 pt-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-32 lg:pt-24">
+        <div className="flex flex-col justify-between gap-8">
+          <div>
+            <h1 className="font-display text-[2.625rem] font-normal leading-[1.08] tracking-[-0.02em] text-landing-fg sm:text-5xl lg:text-[3.75rem]">
+              Turning ideas into something{" "}
+              <span className="serif-em">people want</span>
+            </h1>
 
-          <p className="mt-5 font-display text-xl italic leading-snug text-landing-fg/85 sm:text-2xl">
-            The agentic operating system for innovation
-          </p>
+            <p className="mt-5 font-display text-xl italic leading-snug text-landing-fg/85 sm:text-2xl">
+              The agentic operating system for innovation
+            </p>
+          </div>
 
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-landing-muted-fg md:text-lg md:leading-relaxed">
+          <p className="max-w-lg text-base leading-relaxed text-landing-muted-fg md:text-lg md:leading-relaxed">
             Reaching product-market fit shouldn&apos;t be guesswork. DrumR puts
             specialized AI agents around a gated process, from Idea, Problem
             Solution Fit to Product Market Fit, so every decision is grounded in
             real data, not just conviction.
           </p>
 
-          <WaitlistForm source="hero" showSignInHint className="mt-10" />
+          <WaitlistForm source="hero" showSignInHint />
         </div>
 
         <div className="relative">
@@ -402,6 +405,31 @@ function InnovationStages() {
                 </div>
               </article>
             ))}
+          </div>
+
+          <div className="mt-8 flex flex-col items-start gap-5 rounded-2xl border border-landing-accent/15 bg-landing-accent/[0.06] p-8 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-landing-accent/20 bg-landing-accent/10 text-landing-accent">
+                <Github className="h-4.5 w-4.5" strokeWidth={1.5} />
+              </div>
+              <div>
+                <p className="font-display text-lg font-normal tracking-tight text-landing-fg">
+                  Try the Ideation Kit — free, open source
+                </p>
+                <p className="mt-1 max-w-xl text-sm leading-relaxed text-landing-muted-fg">
+                  Run the full Idea stage locally with Claude Code. Three specialist agents (Ideator, Market Intelligence, and Governance) turn a one-line prompt into a ranked, evidence-backed shortlist.
+                </p>
+              </div>
+            </div>
+            <a
+              href="https://github.com/loicricci/DrumR_Ideation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full bg-landing-accent px-5 py-2.5 font-brand text-sm font-semibold text-landing-bg transition-opacity hover:opacity-90"
+            >
+              <Github className="h-4 w-4" />
+              Get the kit on GitHub
+            </a>
           </div>
         </div>
       </div>

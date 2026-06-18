@@ -41,7 +41,7 @@ const STAGE_ORDER: StageId[] = ["idea", "psf", "pmf", "governance"];
 const CORE_STAGES: Exclude<StageId, "governance">[] = ["idea", "psf", "pmf"];
 
 const NODE_X: Record<string, number> = { idea: 90, psf: 200, pmf: 310 };
-const NODE_Y = 150;
+const NODE_Y = 128;
 const ORBIT_R = 28;
 
 const tabStyles: Record<StageId, { active: string; idle: string }> = {
@@ -126,7 +126,7 @@ function StageNode({ id, active }: { id: Exclude<StageId, "governance">; active:
       {/* stage label */}
       <text
         x={cx}
-        y={NODE_Y + 52}
+        y={NODE_Y + 48}
         textAnchor="middle"
         fontSize="11"
         fontWeight="600"
@@ -155,9 +155,9 @@ function LifecycleDiagram({ activeStage }: { activeStage: StageId }) {
       {/* governance oversight frame */}
       <rect
         x="34"
-        y="74"
+        y="52"
         width="332"
-        height="152"
+        height="148"
         rx="18"
         fill={govActive ? "#fcd34d" : "transparent"}
         fillOpacity={govActive ? 0.05 : 0}
@@ -167,7 +167,7 @@ function LifecycleDiagram({ activeStage }: { activeStage: StageId }) {
         strokeDasharray="4 5"
         style={{ transition: "all 0.6s ease" }}
       />
-      <text x="200" y="68" textAnchor="middle" fontSize="9" letterSpacing="0.22em" fill="#fcd34d" fillOpacity={govActive ? 0.9 : 0.4} style={{ transition: "fill-opacity 0.6s ease", textTransform: "uppercase" }}>
+      <text x="200" y="46" textAnchor="middle" fontSize="9" letterSpacing="0.22em" fill="#fcd34d" fillOpacity={govActive ? 0.9 : 0.4} style={{ transition: "fill-opacity 0.6s ease", textTransform: "uppercase" }}>
         Governance
       </text>
 
