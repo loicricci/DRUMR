@@ -444,11 +444,25 @@ function Footer() {
   return (
     <footer className="border-t border-white/[0.06] py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 sm:flex-row lg:px-10">
-        <div className="flex items-center gap-4">
-          <BrandLogo size="sm" />
-          <span className="text-sm text-landing-muted-fg">
-            &copy; {new Date().getFullYear()} DrumR
-          </span>
+        <div className="flex flex-col items-center gap-1 sm:items-start">
+          <div className="flex items-center gap-4">
+            <BrandLogo size="sm" />
+            <span className="text-sm text-landing-muted-fg">
+              &copy; {new Date().getFullYear()} DrumR
+            </span>
+          </div>
+          <p className="text-xs text-landing-muted-fg/70">
+            A{" "}
+            <a
+              href="https://perceptron-labs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-landing-muted-fg underline-offset-4 transition-colors hover:text-landing-fg hover:underline"
+            >
+              Perceptron Labs
+            </a>{" "}
+            solution
+          </p>
         </div>
         <div className="flex gap-8 text-sm text-landing-muted-fg">
           <Link href="/login" className="transition-colors hover:text-landing-fg">
