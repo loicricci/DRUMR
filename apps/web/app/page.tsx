@@ -106,8 +106,8 @@ function Hero() {
         <div className="flex flex-col justify-between gap-8">
           <div>
             <h1 className="font-display text-[2.625rem] font-normal leading-[1.08] tracking-[-0.02em] text-landing-fg sm:text-5xl lg:text-[3.75rem]">
-              Turning ideas into something{" "}
-              <span className="serif-em">people want</span>
+              Turning ideas into{" "}
+              <span className="serif-em">useful solutions</span>
             </h1>
 
             <p className="mt-5 font-display text-xl italic leading-snug text-landing-fg/85 sm:text-2xl">
