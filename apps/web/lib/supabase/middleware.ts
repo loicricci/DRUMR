@@ -35,8 +35,11 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/verify") ||
     request.nextUrl.pathname.startsWith("/auth/callback");
 
-  // Public endpoints reachable by unauthenticated visitors (e.g. landing page forms)
-  const isPublicRoute = request.nextUrl.pathname.startsWith("/api/waitlist");
+  // Public endpoints reachable by unauthenticated visitors (e.g. landing page forms, legal pages)
+  const isPublicRoute =
+    request.nextUrl.pathname.startsWith("/api/waitlist") ||
+    request.nextUrl.pathname.startsWith("/privacy") ||
+    request.nextUrl.pathname.startsWith("/terms");
 
   if (!user && !isAuthPage && !isPublicRoute && request.nextUrl.pathname !== "/") {
     const url = request.nextUrl.clone();

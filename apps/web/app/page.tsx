@@ -541,13 +541,26 @@ function Footer() {
             solution
           </p>
         </div>
-        <div className="flex gap-8 text-sm text-landing-muted-fg">
+        <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm text-landing-muted-fg">
           <Link href="/login" className="transition-colors hover:text-landing-fg">
             Sign in
           </Link>
           <a href="#waitlist" className="transition-colors hover:text-landing-fg">
             Join waitlist
           </a>
+          <span className="hidden h-4 w-px bg-white/10 sm:inline-block" aria-hidden />
+          <Link
+            href="/privacy"
+            className="transition-colors hover:text-landing-fg"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/terms"
+            className="transition-colors hover:text-landing-fg"
+          >
+            Terms
+          </Link>
         </div>
       </div>
     </footer>
