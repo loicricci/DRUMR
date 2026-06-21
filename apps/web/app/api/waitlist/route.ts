@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@drumr/db";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { createServiceClient } from "@/lib/supabase/server";
 
 const bodySchema = z.object({
   email: z.string().email(),
@@ -33,20 +33,14 @@ export async function POST(request: NextRequest) {
 
   const email = parsed.data.email.toLowerCase().trim();
 
-  try {
-    await prisma.waitlistEntry.create({
-      data: {
-        email,
-        source: parsed.data.source,
-      },
-    });
-  } catch (error) {
-    const isDuplicate =
-      error instanceof Error &&
-      "code" in error &&
-      (error as { code: string }).code === "P2002";
+  const supabase = await createServiceClient();
+  const { error } = await supabase
+    .from("waitlist_entries")
+    .insert({ email, source: parsed.data.source ?? null });
 
-    if (!isDuplicate) {
+  if (error) {
+    // 23505 = unique_violation: email already on the list, treat as success
+    if (error.code !== "23505") {
       console.error("Waitlist signup failed:", error);
       return NextResponse.json(
         { error: "Something went wrong. Please try again." },

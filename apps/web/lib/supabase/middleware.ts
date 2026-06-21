@@ -35,7 +35,10 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/verify") ||
     request.nextUrl.pathname.startsWith("/auth/callback");
 
-  if (!user && !isAuthPage && request.nextUrl.pathname !== "/") {
+  // Public endpoints reachable by unauthenticated visitors (e.g. landing page forms)
+  const isPublicRoute = request.nextUrl.pathname.startsWith("/api/waitlist");
+
+  if (!user && !isAuthPage && !isPublicRoute && request.nextUrl.pathname !== "/") {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
