@@ -195,8 +195,22 @@ export function AgentFleet() {
   };
 
   return (
-    <section id="agents" className="scroll-mt-24 py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="agents" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28">
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-50"
+        style={{ backgroundImage: "url(/sections/platform.png)" }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(11,17,15,0.55) 0%, rgba(11,17,15,0.45) 50%, rgba(11,17,15,0.8) 100%)",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-2xl">
           <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
             Agent fleet

@@ -102,7 +102,21 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl items-stretch gap-12 px-6 pb-24 pt-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-32 lg:pt-24">
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-40"
+        style={{ backgroundImage: "url(/sections/hero.png)" }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(11,17,15,0.85) 0%, rgba(11,17,15,0.55) 50%, rgba(11,17,15,0.35) 100%)",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto grid max-w-7xl items-stretch gap-12 px-6 pb-24 pt-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-32 lg:pt-24">
         <div className="flex flex-col justify-between gap-8">
           <div>
             <h1 className="font-display text-[2.625rem] font-normal leading-[1.08] tracking-[-0.02em] text-landing-fg sm:text-5xl lg:text-[3.75rem]">
@@ -187,8 +201,17 @@ const features = [
 
 function Features() {
   return (
-    <section id="features" className="py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="features" className="relative overflow-hidden py-20 md:py-28">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 60% at 50% 30%, rgba(126,252,184,0.10), transparent 70%)",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-2xl">
           <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
             Platform
@@ -234,6 +257,7 @@ const stages = [
     description:
       "Submit a prompt enriched by market intelligence. The Ideator generates concepts and scores each on viability, desirability, and feasibility (0–10) before anything gets built.",
     icon: Lightbulb,
+    image: "/stages/idea.png",
     agents: ["Ideator", "Market Intelligence"],
   },
   {
@@ -243,6 +267,7 @@ const stages = [
     description:
       "Shape hypotheses, profile personas, run early experiments, and draft POCs. The Early Data Manager collects real signals from users while you prove product-solution fit.",
     icon: FlaskConical,
+    image: "/stages/psf.png",
     agents: ["Hypothesis Builder", "Persona Profiler", "Early Data Manager", "POC Agent"],
   },
   {
@@ -252,6 +277,7 @@ const stages = [
     description:
       "Refine personas, architect the MVP, launch go-to-market motions, and track KPIs. Scale only when the data confirms repeatable product-market fit.",
     icon: Target,
+    image: "/stages/pmf.png",
     agents: ["Persona Refiner", "MVP Architect", "Go-to-Market Agent", "KPI Analyst"],
   },
 ];
@@ -374,34 +400,50 @@ function InnovationStages() {
             {stages.map((stage) => (
               <article
                 key={stage.label}
-                className="relative rounded-2xl border border-white/[0.06] bg-landing-surface/60 p-8 transition-all duration-300 hover:border-landing-accent/20 hover:bg-landing-surface"
+                className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-landing-surface/60 p-8 transition-all duration-300 hover:border-landing-accent/20 hover:bg-landing-surface"
               >
-                <div className="mb-6 flex items-center justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.08] bg-landing-accent/10 text-landing-accent">
-                    <stage.icon className="h-5 w-5" strokeWidth={1.5} />
-                  </div>
-                  <span className="rounded-full border border-landing-accent/20 bg-landing-accent/10 px-3 py-1 font-brand text-xs font-semibold tracking-wide text-landing-accent">
-                    {stage.label}
-                  </span>
-                </div>
-                <span className="font-display text-3xl font-normal text-landing-accent/50">
-                  {stage.step}
-                </span>
-                <h3 className="mt-3 font-display text-2xl font-normal tracking-[-0.02em] text-landing-fg">
-                  {stage.title}
-                </h3>
-                <p className="mt-4 text-sm leading-relaxed text-landing-muted-fg">
-                  {stage.description}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {stage.agents.map((agent) => (
-                    <span
-                      key={agent}
-                      className="rounded-md border border-white/[0.06] bg-white/[0.03] px-2 py-1 font-brand text-[0.625rem] font-medium text-landing-muted-fg"
-                    >
-                      {agent}
+                <div
+                  className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-50 transition-opacity duration-300 group-hover:opacity-70"
+                  style={{ backgroundImage: `url(${stage.image})` }}
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to bottom, rgba(12,21,18,0.30) 0%, rgba(12,21,18,0.62) 55%, rgba(12,21,18,0.85) 100%)",
+                  }}
+                  aria-hidden
+                />
+
+                <div className="relative">
+                  <div className="mb-6 flex items-center justify-between">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.08] bg-landing-accent/10 text-landing-accent">
+                      <stage.icon className="h-5 w-5" strokeWidth={1.5} />
+                    </div>
+                    <span className="rounded-full border border-landing-accent/20 bg-landing-accent/10 px-3 py-1 font-brand text-xs font-semibold tracking-wide text-landing-accent">
+                      {stage.label}
                     </span>
-                  ))}
+                  </div>
+                  <span className="font-display text-3xl font-normal text-landing-accent/50">
+                    {stage.step}
+                  </span>
+                  <h3 className="mt-3 font-display text-2xl font-normal tracking-[-0.02em] text-landing-fg">
+                    {stage.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-relaxed text-landing-muted-fg">
+                    {stage.description}
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-1.5">
+                    {stage.agents.map((agent) => (
+                      <span
+                        key={agent}
+                        className="rounded-md border border-white/[0.06] bg-white/[0.03] px-2 py-1 font-brand text-[0.625rem] font-medium text-landing-muted-fg"
+                      >
+                        {agent}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </article>
             ))}
