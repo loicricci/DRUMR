@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -63,14 +63,37 @@ const tabStyles: Record<StageId, { active: string; idle: string }> = {
   },
 };
 
+type HoveredAgent = {
+  name: string;
+  stageLabel: string;
+  color: string;
+  left: number;
+  top: number;
+};
+
 function agentPositions(cx: number, cy: number, n: number, r: number) {
   return Array.from({ length: n }).map((_, i) => {
     const theta = -Math.PI / 2 + (i / n) * Math.PI * 2;
-    return { x: cx + r * Math.cos(theta), y: cy + r * Math.sin(theta) };
+    return { x: cx + r * Math.cos(theta), y: cy + r * Math.sin(theta), theta };
   });
 }
 
-function StageNode({ id, active }: { id: Exclude<StageId, "governance">; active: boolean }) {
+function StageNode({
+  id,
+  active,
+  onAgentEnter,
+  onAgentLeave,
+}: {
+  id: Exclude<StageId, "governance">;
+  active: boolean;
+  onAgentEnter: (
+    name: string,
+    stageLabel: string,
+    color: string,
+    e: React.MouseEvent<SVGCircleElement>
+  ) => void;
+  onAgentLeave: () => void;
+}) {
   const meta = STAGE_META[id];
   const cx = NODE_X[id];
   const agents = agentPositions(cx, NODE_Y, meta.agents.length, ORBIT_R);
@@ -101,15 +124,27 @@ function StageNode({ id, active }: { id: Exclude<StageId, "governance">; active:
           repeatCount="indefinite"
         />
         {agents.map((p, i) => (
-          <circle key={i} cx={p.x} cy={p.y} r={active ? 3.4 : 2.6} fill={meta.color} style={{ transition: "r 0.6s ease" }}>
-            <animate
-              attributeName="opacity"
-              values="0.55;1;0.55"
-              dur="3.5s"
-              begin={`${i * 0.5}s`}
-              repeatCount="indefinite"
+          <g key={i}>
+            <circle cx={p.x} cy={p.y} r={active ? 3.4 : 2.6} fill={meta.color} style={{ transition: "r 0.6s ease" }}>
+              <animate
+                attributeName="opacity"
+                values="0.55;1;0.55"
+                dur="3.5s"
+                begin={`${i * 0.5}s`}
+                repeatCount="indefinite"
+              />
+            </circle>
+            {/* enlarged invisible hit area for reliable hover */}
+            <circle
+              cx={p.x}
+              cy={p.y}
+              r={9}
+              fill="transparent"
+              style={{ cursor: "pointer" }}
+              onMouseEnter={(e) => onAgentEnter(meta.agents[i], meta.label, meta.color, e)}
+              onMouseLeave={onAgentLeave}
             />
-          </circle>
+          </g>
         ))}
       </g>
 
@@ -140,10 +175,25 @@ function StageNode({ id, active }: { id: Exclude<StageId, "governance">; active:
   );
 }
 
-function LifecycleDiagram({ activeStage }: { activeStage: StageId }) {
+function LifecycleDiagram({
+  activeStage,
+  svgRef,
+  onAgentEnter,
+  onAgentLeave,
+}: {
+  activeStage: StageId;
+  svgRef: React.RefObject<SVGSVGElement | null>;
+  onAgentEnter: (
+    name: string,
+    stageLabel: string,
+    color: string,
+    e: React.MouseEvent<SVGCircleElement>
+  ) => void;
+  onAgentLeave: () => void;
+}) {
   const govActive = activeStage === "governance";
   return (
-    <svg viewBox="0 0 400 300" className="absolute inset-0 h-full w-full" role="img" aria-label="DrumR innovation pipeline: Idea to PSF to PMF with governance oversight">
+    <svg ref={svgRef} viewBox="0 0 400 300" className="absolute inset-0 h-full w-full" role="img" aria-label="DrumR innovation pipeline: Idea to PSF to PMF with governance oversight">
       <defs>
         <linearGradient id="flowGrad" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#7dd3fc" />
@@ -183,7 +233,13 @@ function LifecycleDiagram({ activeStage }: { activeStage: StageId }) {
       ))}
 
       {CORE_STAGES.map((id) => (
-        <StageNode key={id} id={id} active={activeStage === id || govActive} />
+        <StageNode
+          key={id}
+          id={id}
+          active={activeStage === id || govActive}
+          onAgentEnter={onAgentEnter}
+          onAgentLeave={onAgentLeave}
+        />
       ))}
     </svg>
   );
@@ -192,6 +248,10 @@ function LifecycleDiagram({ activeStage }: { activeStage: StageId }) {
 export function ProjectLifecycleVisual() {
   const [activeStage, setActiveStage] = useState<StageId>("idea");
   const [paused, setPaused] = useState(false);
+  const [hoveredAgent, setHoveredAgent] = useState<HoveredAgent | null>(null);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
     if (paused) return;
@@ -204,11 +264,40 @@ export function ProjectLifecycleVisual() {
     return () => clearInterval(interval);
   }, [paused]);
 
+  function handleAgentEnter(
+    name: string,
+    stageLabel: string,
+    color: string,
+    e: React.MouseEvent<SVGCircleElement>
+  ) {
+    // freeze the orbit so the bubble stays under the cursor and the card stays anchored
+    svgRef.current?.pauseAnimations();
+    setPaused(true);
+
+    const container = containerRef.current;
+    if (!container) return;
+    const circleRect = e.currentTarget.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    setHoveredAgent({
+      name,
+      stageLabel,
+      color,
+      left: circleRect.left + circleRect.width / 2 - containerRect.left,
+      top: circleRect.top + circleRect.height / 2 - containerRect.top,
+    });
+  }
+
+  function handleAgentLeave() {
+    svgRef.current?.unpauseAnimations();
+    setPaused(false);
+    setHoveredAgent(null);
+  }
+
   const meta = STAGE_META[activeStage];
 
   return (
     <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-landing-surface shadow-[0_32px_80px_rgba(0,0,0,0.45)]">
-      <div className="relative aspect-[4/3] bg-[#0c1512]">
+      <div ref={containerRef} className="relative aspect-[4/3] bg-[#0c1512]">
         <div
           className="pointer-events-none absolute inset-0 opacity-60"
           style={{
@@ -217,7 +306,49 @@ export function ProjectLifecycleVisual() {
           }}
         />
 
-        <LifecycleDiagram activeStage={activeStage} />
+        <LifecycleDiagram
+          activeStage={activeStage}
+          svgRef={svgRef}
+          onAgentEnter={handleAgentEnter}
+          onAgentLeave={handleAgentLeave}
+        />
+
+        {hoveredAgent && (
+          <div
+            className="pointer-events-none absolute z-30"
+            style={{
+              left: hoveredAgent.left,
+              top: hoveredAgent.top,
+              transform: "translate(-50%, calc(-100% - 14px))",
+            }}
+          >
+            <div
+              className="relative rounded-xl border bg-[#0c1512]/95 px-3.5 py-2 shadow-[0_12px_32px_rgba(0,0,0,0.5)] backdrop-blur-md"
+              style={{ borderColor: `${hoveredAgent.color}55` }}
+            >
+              <p
+                className="font-brand text-[0.5625rem] font-semibold uppercase tracking-[0.16em]"
+                style={{ color: hoveredAgent.color }}
+              >
+                {hoveredAgent.stageLabel} agent
+              </p>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                <span
+                  className="h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ background: hoveredAgent.color }}
+                />
+                <span className="whitespace-nowrap font-brand text-sm font-semibold text-landing-fg">
+                  {hoveredAgent.name}
+                </span>
+              </div>
+              {/* caret */}
+              <span
+                className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r bg-[#0c1512]"
+                style={{ borderColor: `${hoveredAgent.color}55` }}
+              />
+            </div>
+          </div>
+        )}
 
         <div className="absolute left-3 right-3 top-3 z-10 flex flex-wrap gap-1.5 sm:left-4 sm:right-4">
           {STAGE_ORDER.map((id) => (
