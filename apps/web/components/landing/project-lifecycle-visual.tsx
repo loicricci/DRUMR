@@ -41,7 +41,7 @@ const STAGE_ORDER: StageId[] = ["idea", "psf", "pmf", "governance"];
 const CORE_STAGES: Exclude<StageId, "governance">[] = ["idea", "psf", "pmf"];
 
 const NODE_X: Record<string, number> = { idea: 90, psf: 200, pmf: 310 };
-const NODE_Y = 128;
+const NODE_Y = 146;
 const ORBIT_R = 28;
 
 const tabStyles: Record<StageId, { active: string; idle: string }> = {
@@ -205,9 +205,9 @@ function LifecycleDiagram({
       {/* governance oversight frame */}
       <rect
         x="34"
-        y="52"
+        y="70"
         width="332"
-        height="148"
+        height="140"
         rx="18"
         fill={govActive ? "#fcd34d" : "transparent"}
         fillOpacity={govActive ? 0.05 : 0}
@@ -217,7 +217,7 @@ function LifecycleDiagram({
         strokeDasharray="4 5"
         style={{ transition: "all 0.6s ease" }}
       />
-      <text x="200" y="46" textAnchor="middle" fontSize="9" letterSpacing="0.22em" fill="#fcd34d" fillOpacity={govActive ? 0.9 : 0.4} style={{ transition: "fill-opacity 0.6s ease", textTransform: "uppercase" }}>
+      <text x="200" y="64" textAnchor="middle" fontSize="9" letterSpacing="0.22em" fill="#fcd34d" fillOpacity={govActive ? 0.9 : 0.4} style={{ transition: "fill-opacity 0.6s ease", textTransform: "uppercase" }}>
         Governance
       </text>
 
@@ -296,8 +296,8 @@ export function ProjectLifecycleVisual() {
   const meta = STAGE_META[activeStage];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-landing-surface shadow-[0_32px_80px_rgba(0,0,0,0.45)]">
-      <div ref={containerRef} className="relative aspect-[4/3] bg-[#0c1512]">
+    <div className="overflow-hidden rounded-sm border border-landing-border bg-landing-surface shadow-[0_24px_70px_rgba(0,0,0,0.5)]">
+      <div ref={containerRef} className="relative aspect-square bg-[#0c1512] sm:aspect-[4/3]">
         <div
           className="pointer-events-none absolute inset-0 opacity-60"
           style={{
@@ -323,7 +323,7 @@ export function ProjectLifecycleVisual() {
             }}
           >
             <div
-              className="relative rounded-xl border bg-[#0c1512]/95 px-3.5 py-2 shadow-[0_12px_32px_rgba(0,0,0,0.5)] backdrop-blur-md"
+              className="relative rounded-sm border bg-[#0c1512]/95 px-3.5 py-2 shadow-[0_12px_32px_rgba(0,0,0,0.5)] backdrop-blur-md"
               style={{ borderColor: `${hoveredAgent.color}55` }}
             >
               <p
@@ -350,7 +350,7 @@ export function ProjectLifecycleVisual() {
           </div>
         )}
 
-        <div className="absolute left-3 right-3 top-3 z-10 flex flex-wrap gap-1.5 sm:left-4 sm:right-4">
+        <div className="absolute left-3 right-3 top-3 z-10 flex flex-wrap gap-1.5 sm:left-4 sm:right-4 sm:top-4">
           {STAGE_ORDER.map((id) => (
             <button
               key={id}
@@ -377,7 +377,7 @@ export function ProjectLifecycleVisual() {
 
         <div className="pointer-events-none absolute bottom-3 left-3 right-3 z-10 sm:bottom-4 sm:left-4 sm:right-4">
           <div
-            className="rounded-xl border border-white/[0.08] bg-[#0c1512]/70 px-3 py-2.5 backdrop-blur-md"
+            className="rounded-sm border bg-[#0c1512]/80 px-3.5 py-3 backdrop-blur-md"
             style={{ borderColor: `${meta.color}30` }}
           >
             <div className="flex items-center justify-between gap-3">
@@ -392,14 +392,11 @@ export function ProjectLifecycleVisual() {
                 <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
-            <p className="mt-1 text-[0.6875rem] leading-snug text-landing-muted-fg">
-              {meta.description}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-1">
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
               {meta.agents.map((agent) => (
                 <span
                   key={agent}
-                  className="rounded border border-white/[0.06] bg-white/[0.04] px-1.5 py-0.5 font-brand text-[0.5625rem] text-landing-fg/90"
+                  className="rounded-sm border border-landing-border bg-landing-surface px-1.5 py-0.5 font-brand text-[0.5625rem] text-landing-fg/90"
                 >
                   {agent}
                 </span>
@@ -409,26 +406,23 @@ export function ProjectLifecycleVisual() {
         </div>
       </div>
 
-      <div className="border-t border-white/[0.06] p-5">
-        <div className="mb-4 flex items-center justify-between">
+      <div className="border-t border-landing-border p-6">
+        <div className="mb-5 flex items-center justify-between gap-3">
           <div>
             <p className="text-sm font-medium text-landing-fg">Ideator · Top ranked idea</p>
-            <p className="text-xs text-landing-muted-fg">AI workflow automation for SMBs</p>
+            <p className="mt-0.5 text-xs text-landing-muted-fg">AI workflow automation for SMBs</p>
           </div>
-          <span className="rounded-full bg-landing-accent/15 px-3 py-1 text-xs font-semibold text-landing-accent">
+          <span className="shrink-0 rounded-sm bg-landing-accent/15 px-2.5 py-1 text-xs font-semibold text-landing-accent">
             Gate ready
           </span>
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-landing-border bg-landing-border">
           {[
             { label: "Viability", value: "8.4" },
             { label: "Desirability", value: "7.9" },
             { label: "Feasibility", value: "8.1" },
           ].map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-3"
-            >
+            <div key={stat.label} className="bg-landing-bg px-3 py-3.5 text-center">
               <p className="text-[0.625rem] uppercase tracking-wider text-landing-muted-fg">
                 {stat.label}
               </p>

@@ -93,14 +93,14 @@ export function WaitlistForm({
           placeholder="you@company.com"
           disabled={status === "loading"}
           className={cn(
-            "h-12 rounded-full border border-white/15 bg-white/[0.04] px-5 text-sm text-landing-fg placeholder:text-landing-muted-fg/70 outline-none transition-colors focus:border-landing-accent/40 focus:bg-white/[0.06] disabled:opacity-60",
+            "h-12 rounded-sm border border-landing-border bg-landing-surface px-4 text-sm text-landing-fg placeholder:text-landing-muted-fg/70 outline-none transition-colors focus:border-landing-accent/50 disabled:opacity-60",
             isInline ? "w-full sm:min-w-[260px] sm:flex-1" : "w-full sm:flex-1"
           )}
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-landing-accent px-7 text-sm font-semibold text-landing-ink transition-all hover:bg-landing-accent/90 disabled:opacity-60"
+          className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-sm bg-landing-accent px-7 text-sm font-semibold text-landing-ink transition-all hover:bg-landing-accent/90 disabled:opacity-60"
         >
           {status === "loading" ? (
             <Loader2 className="h-4 w-4 animate-spin" />

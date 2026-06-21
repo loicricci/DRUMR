@@ -148,32 +148,22 @@ const stageTabs: {
 
 function AgentList({ agents, indexOffset = 0 }: { agents: AgentDef[]; indexOffset?: number }) {
   return (
-    <div className="divide-y divide-white/[0.06] rounded-2xl border border-white/[0.06] bg-landing-surface/40">
+    <div className="divide-y divide-landing-border rounded-sm border border-landing-border bg-landing-surface/70 backdrop-blur-sm">
       {agents.map((agent, i) => {
         const index = indexOffset + i + 1;
 
         return (
           <article
             key={agent.name}
-            className="group flex flex-col gap-5 p-6 transition-colors hover:bg-landing-surface/60 sm:flex-row sm:items-start sm:gap-8 sm:p-8"
+            className="group flex flex-col gap-3 p-6 transition-colors hover:bg-landing-surface sm:flex-row sm:items-baseline sm:gap-8 sm:p-8"
           >
-            <div className="flex shrink-0 items-center gap-4 sm:w-56 sm:flex-col sm:items-start sm:gap-3">
-              <div className="flex items-center gap-4 sm:w-full">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-landing-accent/10 text-landing-accent transition-colors group-hover:border-landing-accent/25 group-hover:bg-landing-accent/15">
-                  <agent.icon className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                <span className="font-brand text-xs font-medium tabular-nums text-landing-muted-fg/50 sm:hidden">
-                  {String(index).padStart(2, "0")}
-                </span>
-              </div>
-              <div>
-                <span className="hidden font-brand text-xs font-medium tabular-nums text-landing-muted-fg/50 sm:block">
-                  Agent {String(index).padStart(2, "0")}
-                </span>
-                <h3 className="font-brand text-base font-semibold tracking-tight text-landing-fg sm:mt-1">
-                  {agent.name}
-                </h3>
-              </div>
+            <div className="flex shrink-0 items-baseline gap-4 sm:w-56">
+              <span className="font-display text-sm tabular-nums text-landing-accent/70">
+                {String(index).padStart(2, "0")}
+              </span>
+              <h3 className="font-brand text-base font-semibold tracking-tight text-landing-fg">
+                {agent.name}
+              </h3>
             </div>
 
             <p className="min-w-0 flex-1 text-sm leading-relaxed text-landing-muted-fg">
@@ -210,28 +200,32 @@ export function AgentFleet() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="max-w-2xl">
-          <p className="text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-landing-accent">
-            Agent fleet
-          </p>
-          <h2 className="mt-4 font-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-landing-fg sm:text-5xl">
-            Twelve agents. One gated pipeline.
+      <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
+        <div className="flex items-center gap-4">
+          <span className="font-display text-lg tabular-nums text-landing-accent">03</span>
+          <span className="h-px w-10 bg-landing-border" />
+          <span className="font-brand text-xs font-medium text-landing-muted-fg">
+            The fleet
+          </span>
+        </div>
+        <div className="mt-8 max-w-2xl">
+          <h2 className="font-display text-4xl font-normal leading-[1.08] tracking-[-0.02em] text-landing-fg sm:text-5xl">
+            Twelve agents, one gated pipeline.
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-landing-muted-fg">
-            Specialized agents across Idea, PSF, and PMF plus a governance layer
-            with the CEO and gate agents overseeing every advance.
+          <p className="mt-6 text-base leading-relaxed text-landing-muted-fg md:text-lg">
+            Specialized agents across Idea, PSF, and PMF, plus a governance layer
+            where the CEO and gate agents oversee every advance.
           </p>
         </div>
 
         <Tabs defaultValue="idea" className="mt-16">
-          <TabsList className="flex h-auto w-full flex-wrap gap-2 rounded-2xl border border-white/[0.06] bg-landing-surface/40 p-2 sm:inline-flex sm:w-auto">
+          <TabsList className="flex h-auto w-full flex-wrap gap-2 rounded-sm border border-landing-border bg-landing-surface/70 p-2 backdrop-blur-sm sm:inline-flex sm:w-auto">
             {stageTabs.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
                 className={cn(
-                  "flex-1 rounded-xl border border-transparent px-5 py-2.5 font-brand text-sm font-semibold text-landing-muted-fg transition-all sm:flex-none",
+                  "flex-1 rounded-sm border border-transparent px-5 py-2.5 font-brand text-sm font-semibold text-landing-muted-fg transition-all sm:flex-none",
                   tabActiveStyles[tab.value]
                 )}
               >
@@ -245,12 +239,6 @@ export function AgentFleet() {
 
           {stageTabs.map((tab) => (
             <TabsContent key={tab.value} value={tab.value} className="mt-8 focus-visible:outline-none">
-              <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <p className="max-w-xl text-sm text-landing-muted-fg">{tab.intro}</p>
-                <span className="font-brand text-xs font-medium text-landing-muted-fg/60">
-                  {tab.count} agents
-                </span>
-              </div>
               <AgentList agents={tab.agents} indexOffset={stageAgentOffsets[tab.value]} />
             </TabsContent>
           ))}

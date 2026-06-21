@@ -132,19 +132,18 @@ export function IntegrationLogos({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-center gap-x-14 gap-y-6",
+        "flex flex-wrap items-center gap-x-9 gap-y-5",
         className
       )}
     >
       {integrations.map(({ name, Logo }) => (
         <div
           key={name}
-          className="group flex items-center gap-3 text-landing-muted-fg transition-colors hover:text-landing-fg"
+          className="group flex items-center gap-2.5 text-landing-muted-fg/70 transition-colors hover:text-landing-fg"
+          title={name}
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] transition-all group-hover:border-landing-accent/25 group-hover:bg-landing-accent/10">
-            <Logo />
-          </div>
-          <span className="font-brand text-sm font-medium tracking-wide">{name}</span>
+          <Logo className="h-5 w-5" />
+          <span className="font-brand text-sm font-medium">{name}</span>
         </div>
       ))}
     </div>
