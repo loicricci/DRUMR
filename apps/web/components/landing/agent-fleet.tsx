@@ -198,7 +198,7 @@ export function AgentFleet() {
     <section id="agents" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28">
       <div
         className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-50"
-        style={{ backgroundImage: "url(/sections/platform.png)" }}
+        style={{ backgroundImage: "url(/sections/platform.webp)" }}
         aria-hidden
       />
       <div

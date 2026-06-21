@@ -104,7 +104,7 @@ function Hero() {
     <section className="relative overflow-hidden">
       <div
         className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-40"
-        style={{ backgroundImage: "url(/sections/hero.png)" }}
+        style={{ backgroundImage: "url(/sections/hero.webp)" }}
         aria-hidden
       />
       <div
@@ -257,7 +257,7 @@ const stages = [
     description:
       "Submit a prompt enriched by market intelligence. The Ideator generates concepts and scores each on viability, desirability, and feasibility (0–10) before anything gets built.",
     icon: Lightbulb,
-    image: "/stages/idea.png",
+    image: "/stages/idea.webp",
     agents: ["Ideator", "Market Intelligence"],
   },
   {
@@ -267,7 +267,7 @@ const stages = [
     description:
       "Shape hypotheses, profile personas, run early experiments, and draft POCs. The Early Data Manager collects real signals from users while you prove product-solution fit.",
     icon: FlaskConical,
-    image: "/stages/psf.png",
+    image: "/stages/psf.webp",
     agents: ["Hypothesis Builder", "Persona Profiler", "Early Data Manager", "POC Agent"],
   },
   {
@@ -277,7 +277,7 @@ const stages = [
     description:
       "Refine personas, architect the MVP, launch go-to-market motions, and track KPIs. Scale only when the data confirms repeatable product-market fit.",
     icon: Target,
-    image: "/stages/pmf.png",
+    image: "/stages/pmf.webp",
     agents: ["Persona Refiner", "MVP Architect", "Go-to-Market Agent", "KPI Analyst"],
   },
 ];

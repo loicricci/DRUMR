@@ -38,6 +38,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/sections/hero.webp"
+          type="image/webp"
+        />
+      </head>
       <body className={`${inter.variable} ${newsreader.variable} ${hanken.variable} font-sans`}>
         {children}
         <Toaster position="top-right" richColors />
