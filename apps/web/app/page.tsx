@@ -177,6 +177,14 @@ function Hero() {
 
         <div className="relative">
           <ProjectLifecycleVisual />
+          <Link
+            href="/glossary"
+            className="mt-4 inline-flex w-full items-center justify-center gap-1.5 text-sm text-landing-muted-fg transition-colors hover:text-landing-fg"
+          >
+            Ideation, PSF, PMF…{" "}
+            <span className="font-medium text-landing-accent">what&apos;s that??</span>
+            <ArrowRight className="h-3.5 w-3.5 text-landing-accent" />
+          </Link>
         </div>
       </div>
     </section>
@@ -370,7 +378,7 @@ function Methodology() {
         <SectionMarker index="02" label="The method" tone="paper" />
         <div className="mt-8 max-w-3xl">
           <h2 className="font-display text-4xl font-normal leading-[1.06] tracking-[-0.02em] text-landing-paper-fg sm:text-5xl">
-            Design Thinking, Lean, and Agile — fused into a single loop.
+            Design Thinking, Lean, and Agile, fused into a single loop.
           </h2>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-landing-paper-muted md:text-lg">
             We didn&apos;t invent a new framework. We took three that already

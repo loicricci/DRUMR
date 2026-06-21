@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — DrumR",
+  title: "Privacy Policy | DrumR",
   description:
     "How Perceptron Labs collects, uses, and protects your data when you use DrumR.",
 };
@@ -42,7 +42,7 @@ const sections: LegalSection[] = [
             <span className="text-landing-fg">Information you provide.</span>{" "}
             Your email address when you join the waitlist, and account details
             (such as name and email) when you sign up, along with the content you
-            create in the Service — including products, ideas, hypotheses,
+            create in the Service, including products, ideas, hypotheses,
             personas, experiments, and reports.
           </li>
           <li>
@@ -106,9 +106,9 @@ const sections: LegalSection[] = [
         <ul className="list-disc space-y-2 pl-5">
           <li>
             <span className="text-landing-fg">Service providers</span> that help
-            us operate the Service — including hosting, authentication and
+            us operate the Service, including hosting, authentication and
             database infrastructure, analytics, email delivery, and AI model
-            providers — bound by contractual confidentiality obligations;
+            providers, bound by contractual confidentiality obligations;
           </li>
           <li>
             <span className="text-landing-fg">Integrations</span> you choose to

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — DrumR",
+  title: "Terms of Service | DrumR",
   description:
     "The terms governing your use of DrumR, operated by Perceptron Labs.",
 };
